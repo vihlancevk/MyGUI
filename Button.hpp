@@ -1,40 +1,29 @@
 #ifndef BUTTON_HPP_
 #define BUTTON_HPP_
 
-#include "Widget.hpp"
+#include "AbstractButton.hpp"
 
 enum Color {
     RED = 1,
     GREEN = 2,
-    BLUE = 4
+    BLUE = 4,
+    WHITE = 7
 };
 
-class Button: Widget {
+class Button: AbstractButton {
     public:
-        unsigned x_;
-        unsigned y_;
-
-        unsigned weight_;
-        unsigned hight_;
-
         Color color_;
-        
-        bool isClick_;
-        bool isPress_;
     public:
+        Button():
+            AbstractButton(0, 0),
+            color_(WHITE)
+            {}
+
         Button(unsigned x, unsigned y, Color color):
-            x_(x),
-            y_(y),
-            weight_(160),
-            hight_(90),
-            color_(color),
-            isClick_(false),
-            isPress_(false)
+            AbstractButton(x, y),
+            color_(color)
             {}
         ~Button() {}
-
-        void onClick();
-        void onPress();
 
         void draw(sf::RenderWindow& window) override;
 };

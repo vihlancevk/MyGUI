@@ -13,7 +13,7 @@ class Widget {
         virtual void onMouseMove() {}
         virtual void onKeyboard() {}
 
-        virtual void draw(sf::RenderWindow& window) {}
+        virtual void draw(sf::RenderWindow&) {}
 
         virtual void close() {}
 };

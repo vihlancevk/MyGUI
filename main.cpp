@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 
+#include "ButtonManager.hpp"
 #include "Button.hpp"
 
 const unsigned SCREEN_WEIGHT = 1920;
@@ -12,9 +13,13 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
 
-    Button but1(1525, 400, Color::RED);
-    Button but2(1525, 500, Color::GREEN);
-    Button but3(1525, 600, Color::BLUE);
+    ButtonManager buttonManager
+    (
+        3,
+        Button (1525, 400, Color::RED),
+        Button (1525, 500, Color::GREEN),
+        Button (1525, 600, Color::BLUE)   
+    );
 
 	sf::Event event;
 
@@ -37,14 +42,12 @@ int main()
 
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+                    // sf::Vector2i localPosition = sf::Mouse::getPosition(window);
                 }
             }
 		}
 
-        but1.draw(window);
-        but2.draw(window);
-        but3.draw(window);
+        buttonManager.draw(window);
 
         window.display();
 		window.clear();
