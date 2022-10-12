@@ -3,14 +3,7 @@
 
 #include "AbstractButton.hpp"
 
-enum Color {
-    RED = 1,
-    GREEN = 2,
-    BLUE = 4,
-    WHITE = 7
-};
-
-class Button: AbstractButton {
+class Button: public AbstractButton {
     public:
         Color color_;
     public:

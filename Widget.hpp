@@ -4,6 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+enum Color {
+    BLACK = 0,
+    RED = 1,
+    GREEN = 2,
+    BLUE = 4,
+    WHITE = 7
+};
+
 class Widget {
     public:
         virtual ~Widget() = default;
@@ -13,7 +21,9 @@ class Widget {
         virtual void onMouseMove() {}
         virtual void onKeyboard() {}
 
-        virtual void draw(sf::RenderWindow&) {}
+        virtual void draw(sf::RenderWindow&) {
+            std::cout << "Widget::draw()\n";
+        }
 
         virtual void close() {}
 };

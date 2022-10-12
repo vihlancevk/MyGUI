@@ -4,47 +4,55 @@
 #include "Widget.hpp"
 #include "Button.hpp"
 
-class ButtonManager: Widget {
+class ButtonManager: public Widget {
     public:
         size_t size_;
-        Button* elems_;
+        size_t curSize_;
+        AbstractButton** buttons_;
      public:
-        ButtonManager(size_t size, Button buttons, ...):
+        ButtonManager(size_t size):
             size_(size),
-            elems_(new Button[size_])
-            {
-                size_t i = 0;
-                for (Button* p = &buttons; i < size_; p++) {
-                    elems_[i] = *p;
-                    i++;
-                }
-            }
+            curSize_(0),
+            buttons_(new AbstractButton*[size_])
+            {}
         
         ButtonManager(const ButtonManager& buttonManager):
             size_(buttonManager.size_),
-            elems_(new Button[size_])
+            curSize_(buttonManager.curSize_),
+            buttons_(new AbstractButton*[size_])
             {
                 for (size_t i = 0; i < size_; i++) {
-                    elems_[i] = buttonManager.elems_[i];
+                    buttons_[i] = buttonManager.buttons_[i];
                 }
             }
         ButtonManager& operator = (const ButtonManager& buttonManager) {
             size_ = buttonManager.size_;
-            delete [] elems_;
-            elems_ = new Button[size_];
+            curSize_ = buttonManager.curSize_;
+            delete [] buttons_;
+            buttons_ = new AbstractButton*[size_];
             for (size_t i = 0; i < size_; i++) {
-                elems_[i] = buttonManager.elems_[i];
+                buttons_[i] = buttonManager.buttons_[i];
             }
 
             return *this;
         }
         ~ButtonManager() {
-            delete [] elems_;
+            delete [] buttons_;
+        }
+
+        size_t addButton(AbstractButton* abstractButton) {
+            if (curSize_ > size_) {
+                std::cout << "Array of buttons is full!\n";
+                return 0;
+            } else {
+                buttons_[curSize_++] = abstractButton;
+                return 1;
+            }
         }
 
         void draw(sf::RenderWindow& window) override {
             for (size_t i = 0; i < size_; i++) {
-                elems_[i].draw(window);
+                buttons_[i]->draw(window);
             }
         }
 };

@@ -3,7 +3,7 @@
 
 #include "Widget.hpp"
 
-class AbstractButton: Widget {
+class AbstractButton: public Widget {
     public:
         unsigned x_;
         unsigned y_;
