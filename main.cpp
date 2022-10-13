@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 
+#include "CanvasWindow.hpp"
 #include "ButtonManager.hpp"
 #include "Button.hpp"
-#include "CanvasWindow.hpp"
 #include "WidgetManager.hpp"
 
 const unsigned SCREEN_WEIGHT = 1920;
@@ -16,19 +16,22 @@ int main()
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
 
     CanvasWindow canvasWindow(200, 175);
+    Button but1(1525, 400, Color::RED);
+    Button but2(1525, 500, Color::GREEN);
+    Button but3(1525, 600, Color::BLUE);
     
     const size_t nButtons = 3;
-    Button arrayButtons[nButtons] =
+    Button buttons[nButtons] = 
     {
-        Button (1525, 400, Color::RED),
-        Button (1525, 500, Color::GREEN),
-        Button (1525, 600, Color::BLUE)
+        Button(1525, 400, Color::RED),
+        Button(1525, 500, Color::GREEN),
+        Button(1525, 600, Color::BLUE)
     };
-    ButtonManager buttonManager(nButtons);
-    for (size_t i = 0; i < nButtons; i++) {
-        buttonManager.addButton(&arrayButtons[i]);
+    ButtonManager buttonManager(3);
+    for (size_t i = 0; i < nButtons; i++){
+        buttonManager.addButton(&buttons[i]);   
     }
-    
+
     WidgetManager widgetManager(2);
     widgetManager.addWidjet(&canvasWindow);
     widgetManager.addWidjet(&buttonManager);
@@ -53,9 +56,8 @@ int main()
 			}
 
             if (event.type == sf::Event::MouseButtonPressed) {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    // sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-                }
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+                widgetManager.onMouseClick((unsigned) mousePosition.x, (unsigned) mousePosition.y);
             }
 		}
 

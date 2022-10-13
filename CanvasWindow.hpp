@@ -4,24 +4,23 @@
 #include "Widget.hpp"
 
 class CanvasWindow: public Widget {
-    public:
-        unsigned x_;
-        unsigned y_;
-
-        unsigned weight_;
-        unsigned hight_;
-        
+    public:        
         const Color canvasColor_ = Color::WHITE;
         Color color_;
+
+        bool isActive_;
     public:
         CanvasWindow(unsigned x, unsigned y):
-            x_(x),
-            y_(y),
-            weight_(1280),
-            hight_(720),
-            color_(Color::BLACK)
+            Widget(x, y, 1280, 720),
+            color_(Color::BLACK),
+            isActive_(false)
             {}
         ~CanvasWindow() {}
+
+        void onMouseClick(unsigned x, unsigned y) override {
+            if (isPointInWidget(x, y))
+                isActive_ = (isActive_) ? false : true;       
+        }
 
         void draw(sf::RenderWindow& window) override;
 };

@@ -49,6 +49,12 @@ class WidgetManager {
             }
         }
 
+        void onMouseClick(unsigned x, unsigned y) {
+            for (size_t i = 0; i < size_; i++) {
+                widgets_[i]->onMouseClick(x, y);
+            }
+        }
+
         void draw(sf::RenderWindow& window) {
             for (size_t i = 0; i < size_; i++) {
                 widgets_[i]->draw(window);

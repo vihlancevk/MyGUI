@@ -11,12 +11,14 @@ class ButtonManager: public Widget {
         AbstractButton** buttons_;
      public:
         ButtonManager(size_t size):
+            Widget(),
             size_(size),
             curSize_(0),
             buttons_(new AbstractButton*[size_])
             {}
         
         ButtonManager(const ButtonManager& buttonManager):
+            Widget(),
             size_(buttonManager.size_),
             curSize_(buttonManager.curSize_),
             buttons_(new AbstractButton*[size_])
@@ -47,6 +49,28 @@ class ButtonManager: public Widget {
             } else {
                 buttons_[curSize_++] = abstractButton;
                 return 1;
+            }
+        }
+
+        void onMouseClick(unsigned x, unsigned y) override {
+            bool isActivated = false;
+            
+            for (size_t i = 0; i < size_; i++) {
+                if (!buttons_[i]->isActive_)
+                    isActivated = true;
+                
+                buttons_[i]->onMouseClick(x, y);
+
+                if (buttons_[i]->isActive_ && isActivated) {
+                    for (size_t j = 0; j < size_; j++) {
+                        if (j != i)
+                            buttons_[j]->isActive_ = false;
+                    }
+
+                    break;
+                } else {
+                    isActivated = false;
+                }
             }
         }
 
