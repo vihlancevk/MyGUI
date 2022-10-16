@@ -55,10 +55,8 @@ class Widget {
 
         virtual void move() {}
 
-        virtual void onMouseMove() {}
-        virtual void onMouseClick(unsigned, unsigned) {
-            std::cout << "In Widget::onMouseClick()\n";
-        }
+        virtual void onMouseMove(unsigned, unsigned) {}
+        virtual void onMouseClick(unsigned, unsigned) {}
         virtual void onKeyboard() {}
 
         virtual void draw(sf::RenderWindow&) {}

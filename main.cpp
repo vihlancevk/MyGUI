@@ -8,7 +8,7 @@
 const unsigned SCREEN_WEIGHT = 1920;
 const unsigned SCREEN_HIGHT = 1080;
 const char *SCREEN_TITLE = "";
-const unsigned FRAME_RATE_LIMIT = 60;
+const unsigned FRAME_RATE_LIMIT = 144;
 
 int main()
 {
@@ -22,18 +22,21 @@ int main()
         Button(1525, 500, Color::GREEN),
         Button(1525, 600, Color::BLUE)
     };
+
     ButtonManager buttonManager(3);
     for (size_t i = 0; i < nButtons; i++){
-        buttonManager.addButton(&buttons[i]);   
+        buttonManager.addButton(buttons[i]);   
     }
 
     CanvasWindow canvasWindow(200, 175);
 
-    WidgetManager widgetManager(buttonManager, canvasWindow);
+    PainterManager painterManager(buttonManager, canvasWindow);
 
 	sf::Event event;
 
 	while (window.isOpen()) {
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
                 window.close();
@@ -51,12 +54,13 @@ int main()
 			}
 
             if (event.type == sf::Event::MouseButtonPressed) {
-                sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-                widgetManager.onMouseClick((unsigned) mousePosition.x, (unsigned) mousePosition.y);
+                painterManager.onMouseClick((unsigned) mousePosition.x, (unsigned) mousePosition.y);
             }
 		}
 
-        widgetManager.draw(window);
+
+        painterManager.onMouseMove((unsigned) mousePosition.x, (unsigned) mousePosition.y);
+        painterManager.draw(window);
         window.display();
 		window.clear();
 	}
