@@ -12,7 +12,7 @@ void CanvasWindow::draw(sf::RenderWindow& window) {
         
         sf::CircleShape point(pointRadius);
         point.setPosition(sf::Vector2f((float) x_ + pointRadius, (float) y_ + pointRadius));
-        point.setFillColor(calculateColor(color_));
+        point.setFillColor(calculateColor(paintbrushColor_));
     
         window.draw(point);
     }

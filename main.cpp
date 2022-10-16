@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
 
-#include "CanvasWindow.hpp"
-#include "ButtonManager.hpp"
 #include "Button.hpp"
-#include "WidgetManager.hpp"
+#include "ButtonManager.hpp"
+#include "CanvasWindow.hpp"
+#include "PainterManager.hpp"
 
 const unsigned SCREEN_WEIGHT = 1920;
 const unsigned SCREEN_HIGHT = 1080;
@@ -15,11 +15,6 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
 
-    CanvasWindow canvasWindow(200, 175);
-    Button but1(1525, 400, Color::RED);
-    Button but2(1525, 500, Color::GREEN);
-    Button but3(1525, 600, Color::BLUE);
-    
     const size_t nButtons = 3;
     Button buttons[nButtons] = 
     {
@@ -32,9 +27,9 @@ int main()
         buttonManager.addButton(&buttons[i]);   
     }
 
-    WidgetManager widgetManager(2);
-    widgetManager.addWidjet(&canvasWindow);
-    widgetManager.addWidjet(&buttonManager);
+    CanvasWindow canvasWindow(200, 175);
+
+    WidgetManager widgetManager(buttonManager, canvasWindow);
 
 	sf::Event event;
 

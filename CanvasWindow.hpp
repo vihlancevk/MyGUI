@@ -6,13 +6,13 @@
 class CanvasWindow: public Widget {
     public:        
         const Color canvasColor_ = Color::WHITE;
-        Color color_;
+        Color paintbrushColor_;
 
         bool isActive_;
     public:
         CanvasWindow(unsigned x, unsigned y):
             Widget(x, y, 1280, 720),
-            color_(Color::BLACK),
+            paintbrushColor_(Color::BLACK),
             isActive_(false)
             {}
         ~CanvasWindow() {}
