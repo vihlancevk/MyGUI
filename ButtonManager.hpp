@@ -19,7 +19,7 @@ class ButtonManager {
         ~ButtonManager() {
             delete [] (char*)buttons_;
         }
-        
+
         ButtonManager(const ButtonManager& buttonManager):
             size_(buttonManager.size_),
             curSize_(buttonManager.curSize_),
@@ -77,6 +77,8 @@ class ButtonManager {
                 }
             }
         }
+
+        void onMouseReleased(unsigned, unsigned) {}
 
         void draw(sf::RenderWindow& window) {
             for (size_t i = 0; i < size_; i++) {

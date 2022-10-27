@@ -13,14 +13,9 @@ const unsigned SCREEN_HIGHT = 1080;
 const char *SCREEN_TITLE = "";
 const unsigned FRAME_RATE_LIMIT = 144;
 
-int main()
-{
+int main() {
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
-
-    ToolManager toolManager;
-    toolManager.addTool(new Brush(225, 175, "images/brush.png"));
-    toolManager.addTool(new Eraser(225, 300, "images/eraser.png"));
 
     const size_t nButtons = 3;
     Button buttons[nButtons] = 
@@ -35,9 +30,14 @@ int main()
         buttonManager.addButton(buttons[i]);   
     }
 
+    ToolManager toolManager;
+    toolManager.addTool(new Brush(225, 175, "images/brush.png"));
+    toolManager.addTool(new Eraser(225, 300, "images/eraser.png"));
+    // std::cout << "brush - " << toolManager.tools_[0] << ", eraser - " << toolManager.tools_[1] << "\n"; - debug
+
     CanvasWindow canvasWindow(375, 175);
 
-    PainterManager painterManager(buttonManager, canvasWindow);
+    PainterManager painterManager(buttonManager, &toolManager, canvasWindow);
 
 	sf::Event event;
 
@@ -63,12 +63,15 @@ int main()
             if (event.type == sf::Event::MouseButtonPressed) {
                 painterManager.onMouseClick((unsigned) mousePosition.x, (unsigned) mousePosition.y);
             }
+
+            if (event.type == sf::Event::MouseButtonReleased) {
+                painterManager.onMouseReleased((unsigned) mousePosition.x, (unsigned) mousePosition.y);
+            }
 		}
 
 
         painterManager.onMouseMove((unsigned) mousePosition.x, (unsigned) mousePosition.y);
         painterManager.draw(window);
-        toolManager.draw(window);
         window.display();
 		window.clear();
 	}

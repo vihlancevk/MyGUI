@@ -18,11 +18,6 @@ class Button: public AbstractButton {
             {}
         ~Button() {}
 
-        void onMouseClick(unsigned x, unsigned y) override {
-            if (isPointInWidget(x, y))
-                isActive_ = (isActive_) ? false : true;       
-        }
-
         void draw(sf::RenderWindow& window) override;
 };
 

@@ -57,6 +57,7 @@ class Widget {
 
         virtual void onMouseMove(unsigned, unsigned) {}
         virtual void onMouseClick(unsigned, unsigned) {}
+        virtual void onMouseReleased(unsigned, unsigned) {}
         virtual void onKeyboard() {}
 
         virtual void draw(sf::RenderWindow&) {}
