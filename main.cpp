@@ -4,6 +4,9 @@
 #include "ButtonManager.hpp"
 #include "CanvasWindow.hpp"
 #include "PainterManager.hpp"
+#include "Brush.hpp"
+#include "Eraser.hpp"
+#include "ToolManager.hpp"
 
 const unsigned SCREEN_WEIGHT = 1920;
 const unsigned SCREEN_HIGHT = 1080;
@@ -15,12 +18,16 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
 
+    ToolManager toolManager;
+    toolManager.addTool(new Brush(225, 175, "images/brush.png"));
+    toolManager.addTool(new Eraser(225, 300, "images/eraser.png"));
+
     const size_t nButtons = 3;
     Button buttons[nButtons] = 
     {
-        Button(1525, 400, Color::RED),
-        Button(1525, 500, Color::GREEN),
-        Button(1525, 600, Color::BLUE)
+        Button(1700, 400, Color::RED),
+        Button(1700, 500, Color::GREEN),
+        Button(1700, 600, Color::BLUE)
     };
 
     ButtonManager buttonManager(3);
@@ -28,7 +35,7 @@ int main()
         buttonManager.addButton(buttons[i]);   
     }
 
-    CanvasWindow canvasWindow(200, 175);
+    CanvasWindow canvasWindow(375, 175);
 
     PainterManager painterManager(buttonManager, canvasWindow);
 
@@ -61,6 +68,7 @@ int main()
 
         painterManager.onMouseMove((unsigned) mousePosition.x, (unsigned) mousePosition.y);
         painterManager.draw(window);
+        toolManager.draw(window);
         window.display();
 		window.clear();
 	}
