@@ -19,5 +19,4 @@ void Brush::draw(sf::RenderWindow& window) {
     
         window.draw(point);
     }
-
 }

@@ -30,7 +30,7 @@ class CanvasWindow: public Widget {
                 isActive_ = false;
             }
 
-            if (isActive_) {
+            if (isActive_ && activeTool_) {
                 activeTool_->actionWithCanvas(pixels_, x_, y_, weight_, hight_, x, y);
             }
         }

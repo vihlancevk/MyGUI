@@ -43,6 +43,8 @@ class ToolManager {
 
                     activeTool_ = tools_[i];
                     return;
+                } else if (!(tools_[i]->isActive_ || isActivated)) {
+                    activeTool_ = nullptr;
                 } else {
                     isActivated = false;
                 }

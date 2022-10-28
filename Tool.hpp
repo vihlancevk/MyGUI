@@ -7,8 +7,8 @@ class Tool: public AbstractButton {
     public:
         sf::Image image_;
 
+        unsigned size_ = 10;
         Color color_ = Color::BLACK;
-        unsigned size_ = 5;
     public:
         Tool(unsigned x, unsigned y, const char* image):
             AbstractButton(x, y),
