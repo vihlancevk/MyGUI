@@ -1,24 +1,24 @@
-#ifndef BUTTON_HPP_
-#define BUTTON_HPP_
+#ifndef COLOR_BUTTON_HPP_
+#define COLOR_BUTTON_HPP_
 
 #include "AbstractButton.hpp"
 
-class Button: public AbstractButton {
+class ColorButton: public AbstractButton {
     public:
         Color color_;
     public:
-        Button():
+        ColorButton():
             AbstractButton(0, 0),
             color_(WHITE)
             {}
 
-        Button(unsigned x, unsigned y, Color color):
+        ColorButton(unsigned x, unsigned y, Color color):
             AbstractButton(x, y),
             color_(color)
             {}
-        ~Button() {}
+        ~ColorButton() {}
 
         void draw(sf::RenderWindow& window) override;
 };
 
-#endif // BUTTON_HPP_
+#endif // COLOR_BUTTON_HPP_

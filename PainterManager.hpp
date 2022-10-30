@@ -1,19 +1,19 @@
 #ifndef WIDGET_MANAGER_HPP_
 #define WIDGET_MANAGER_HPP_
 
-#include "ButtonManager.hpp"
-#include "ToolManager.hpp"
+#include "ColorButtonManager.hpp"
+#include "ToolButtonManager.hpp"
 #include "CanvasWindow.hpp"
 
 class PainterManager {
     public:
-        ButtonManager buttonManager_;
-        ToolManager* toolManager_; // ptr on ToolManager object, that create in main.cpp
+        ColorButtonManager colorButtonManager_;
+        ToolButtonManager toolButtonManager_;
         CanvasWindow canvasWindow_;
     public:
-        PainterManager(ButtonManager buttonManager, ToolManager* toolManager, CanvasWindow canvasWindow):
-            buttonManager_(buttonManager),
-            toolManager_(toolManager),
+        PainterManager(ColorButtonManager& colorButtonManager, ToolButtonManager& toolButtonManager, CanvasWindow& canvasWindow):
+            colorButtonManager_(colorButtonManager),
+            toolButtonManager_(toolButtonManager),
             canvasWindow_(canvasWindow)
             {}
         ~PainterManager() {}
@@ -23,24 +23,24 @@ class PainterManager {
         }
 
         void onMouseClick(unsigned x, unsigned y) {
-            buttonManager_.onMouseClick(x, y);
+            colorButtonManager_.onMouseClick(x, y);
 
-            toolManager_->color_ = buttonManager_.curColor_;
-            toolManager_->onMouseClick(x, y);
+            // toolButtonManager_.color_ = colorButtonManager_.activeColor_;
+            toolButtonManager_.onMouseClick(x, y);
 
-            canvasWindow_.activeTool_ = toolManager_->activeTool_;
+            canvasWindow_.activeTool_ = toolButtonManager_.activeTool_;
             canvasWindow_.onMouseClick(x, y);
         }
 
         void onMouseReleased(unsigned x, unsigned y) {
-            buttonManager_.onMouseReleased(x, y);
-            toolManager_->onMouseReleased(x, y);
+            colorButtonManager_.onMouseReleased(x, y);
+            toolButtonManager_.onMouseReleased(x, y);
             canvasWindow_.onMouseReleased(x, y);
         }
 
         void draw(sf::RenderWindow& window) {
-            buttonManager_.draw(window);
-            toolManager_->draw(window);
+            colorButtonManager_.draw(window);
+            toolButtonManager_.draw(window);
             canvasWindow_.draw(window);
         }
 };

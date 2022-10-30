@@ -13,7 +13,10 @@ class AbstractButton: public Widget {
             {}
         ~AbstractButton() {}
 
-        void onMouseClick(unsigned x, unsigned y) override;
+        void onMouseClick(unsigned x, unsigned y) override {
+            if (isPointInWidget(x, y))
+                isActive_ = (isActive_) ? false : true;
+        }
 };
 
 #endif // BUTTON_HPP_

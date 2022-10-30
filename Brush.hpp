@@ -1,13 +1,21 @@
 #ifndef BRUSH_HPP_
 #define BRUSH_HPP_
 
+sf::Color calculateColor(Color color);
+
 #include "Tool.hpp"
 
 class Brush: public Tool {
     public:
-        Brush(unsigned x, unsigned y, const char* image):
-            Tool(x, y, image)
+        Color color_;
+        unsigned size_;
+    public:
+        Brush():
+            Tool(),
+            color_(Color::BLACK),
+            size_(10)
             {}
+
         ~Brush() {}
 
         void actionWithCanvas(sf::VertexArray& pixels,
@@ -34,16 +42,18 @@ class Brush: public Tool {
                     pixels[startPixel + i * canvasWeight + j].color = calculateColor(color_);
                 }
             }
-
         }
-
-        void onMouseClick(unsigned x, unsigned y) override {
-            if (isPointInWidget(x, y)) {
-                isActive_ = (isActive_) ? false : true;
-            }
-        }
-
-        void draw(sf::RenderWindow& window) override;
 };
+
+sf::Color calculateColor(Color color) {
+    sf::Color sfColor
+    (
+        (sf::Uint8) ((color & 1) * 255),
+        (sf::Uint8) (((color & 2) >> 1) * 255),
+        (sf::Uint8) (((color & 4) >> 2) * 255)
+    );
+
+    return sfColor;
+}
 
 #endif // BRUSH_HPP_

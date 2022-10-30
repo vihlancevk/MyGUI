@@ -25,12 +25,16 @@ class CanvasWindow: public Widget {
             }
         ~CanvasWindow() {}
 
+        // one canvasWindow - one activeTool
+        // CanvasWindow(const CanvasWindow& canvasWindow) = delete;
+        // CanvasWindow& operator = (const CanvasWindow& canvasWindow) = delete;
+
         void onMouseMove(unsigned x, unsigned y) override {
             if (!isPointInWidget(x, y)) {
                 isActive_ = false;
             }
 
-            if (isActive_ && activeTool_) {
+            if (isActive_) {
                 activeTool_->actionWithCanvas(pixels_, x_, y_, weight_, hight_, x, y);
             }
         }

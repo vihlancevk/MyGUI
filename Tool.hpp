@@ -1,26 +1,23 @@
 #ifndef TOOL_HPP_
 #define TOOL_HPP_
 
-#include "AbstractButton.hpp"
+#include <SFML/Graphics.hpp>
 
-class Tool: public AbstractButton {
+class Tool {
     public:
-        sf::Image image_;
-
-        unsigned size_ = 10;
-        Color color_ = Color::BLACK;
+        bool isActive_;
     public:
-        Tool(unsigned x, unsigned y, const char* image):
-            AbstractButton(x, y),
-            image_()
-            {
-                image_.loadFromFile(image);
-            }
-        ~Tool() {}
+        Tool():
+            isActive_(false)
+            {}
 
         virtual void actionWithCanvas(sf::VertexArray&,
                                       unsigned, unsigned, unsigned, unsigned,
-                                      unsigned, unsigned) {}
+                                      unsigned, unsigned) {
+            std::cout << "Now active is StartTool\n";
+        }
+
+        virtual ~Tool() = default;
 };
 
 #endif // TOOL_HPP_
