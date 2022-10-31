@@ -1,6 +1,7 @@
 #ifndef COLOR_BUTTON_HPP_
 #define COLOR_BUTTON_HPP_
 
+#include "Color.hpp"
 #include "AbstractButton.hpp"
 
 class ColorButton: public AbstractButton {

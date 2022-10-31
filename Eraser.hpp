@@ -5,11 +5,8 @@
 
 class Eraser: public Tool {
     public:
-        unsigned size_;
-    public:
         Eraser():
-            Tool(),
-            size_(20)
+            Tool()
             {}
         ~Eraser() {}
 

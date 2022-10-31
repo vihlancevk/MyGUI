@@ -4,14 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-enum Color {
-    BLACK = 0,
-    RED = 1,
-    GREEN = 2,
-    BLUE = 4,
-    WHITE = 7
-};
-
 class Widget {
     public:
         unsigned x_, y_;
@@ -31,17 +23,6 @@ class Widget {
             weight_(weight),
             hight_(hight)
             {}
-
-        sf::Color calculateColor(Color color) {
-            sf::Color sfColor
-            (
-                (sf::Uint8) ((color & 1) * 255),
-                (sf::Uint8) (((color & 2) >> 1) * 255),
-                (sf::Uint8) (((color & 4) >> 2) * 255)
-            );
-
-            return sfColor;
-        }
 
         bool isPointInWidget(unsigned x, unsigned y) {
             if (x_ <= x && x <= (x_ + weight_)) {

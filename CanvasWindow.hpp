@@ -25,7 +25,7 @@ class CanvasWindow: public Widget {
             }
         ~CanvasWindow() {}
 
-        // one canvasWindow - one activeTool
+        // TODO: write a copy constructor and assignment operator
         // CanvasWindow(const CanvasWindow& canvasWindow) = delete;
         // CanvasWindow& operator = (const CanvasWindow& canvasWindow) = delete;
 
@@ -34,7 +34,7 @@ class CanvasWindow: public Widget {
                 isActive_ = false;
             }
 
-            if (isActive_) {
+            if (isActive_ && activeTool_) {
                 activeTool_->actionWithCanvas(pixels_, x_, y_, weight_, hight_, x, y);
             }
         }
@@ -49,7 +49,9 @@ class CanvasWindow: public Widget {
                 isActive_ = false;
         }
 
-        void draw(sf::RenderWindow& window) override;
+        void draw(sf::RenderWindow& window) override {
+            window.draw(pixels_);
+        }
 };
 
 #endif // CANVAS_WINDOW_HPP_

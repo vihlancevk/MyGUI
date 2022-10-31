@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 
-#include "ColorButton.hpp"
-#include "ColorButtonManager.hpp"
 #include "Brush.hpp"
 #include "Eraser.hpp"
+#include "ToolManager.hpp"
+#include "ColorButton.hpp"
+#include "ColorButtonManager.hpp"
 #include "ToolButtonManager.hpp"
 #include "CanvasWindow.hpp"
 #include "PainterManager.hpp"
@@ -17,6 +18,10 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
 
+    ToolManager toolManager(2);
+    toolManager.addTool(new Brush());
+    toolManager.addTool(new Eraser());
+
     const size_t nColorButtons = 3;
     ColorButton colorButtons[nColorButtons] = 
     {
@@ -27,16 +32,21 @@ int main() {
 
     ColorButtonManager colorButtonManager(3);
     for (size_t i = 0; i < nColorButtons; i++){
-        colorButtonManager.addButton(colorButtons[i]);   
+        colorButtonManager.addColorButton(colorButtons[i]);   
     }
 
+    ToolButton brushButton(225, 175, "images/brush.png");
+    brushButton.setTool(toolManager.tools_[0]);
+    ToolButton eraserButton(225, 300, "images/eraser.png");
+    eraserButton.setTool(toolManager.tools_[1]);
+
     ToolButtonManager toolButtonManager(2);
-    toolButtonManager.addTool(new ToolButton(225, 175, "images/brush.png", new Brush()));
-    toolButtonManager.addTool(new ToolButton(225, 300, "images/eraser.png", new Eraser()));
+    toolButtonManager.addTool(&brushButton);
+    toolButtonManager.addTool(&eraserButton);
 
     CanvasWindow canvasWindow(375, 175);
 
-    PainterManager painterManager(colorButtonManager, toolButtonManager, canvasWindow);
+    PainterManager painterManager(toolManager, colorButtonManager, toolButtonManager, canvasWindow);
 
 	sf::Event event;
 

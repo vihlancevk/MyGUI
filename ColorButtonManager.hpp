@@ -17,7 +17,7 @@ class ColorButtonManager {
             colorButtons_((ColorButton*) new char[size_*sizeof(ColorButton)])
             {}
         ~ColorButtonManager() {
-            delete [] (char*)colorButtons_;
+            delete (char*) colorButtons_;
         }
 
         ColorButtonManager(const ColorButtonManager& colorButtonManager):
@@ -25,7 +25,7 @@ class ColorButtonManager {
             curSize_(colorButtonManager.curSize_),
             colorButtons_((ColorButton*) new char[size_*sizeof(ColorButton)])
             {
-                for (size_t i = 0; i < size_; i ++) {
+                for (size_t i = 0; i < curSize_; i ++) {
                     new (&colorButtons_[i]) ColorButton((colorButtonManager.colorButtons_[i]));
                 }
             }
@@ -35,15 +35,15 @@ class ColorButtonManager {
             size_ = colorButtonManager.size_;
             curSize_ = colorButtonManager.curSize_;
             colorButtons_ = (ColorButton*) new char[size_*sizeof(ColorButton)];
-            for (size_t i = 0; i < size_; i ++) {
+            for (size_t i = 0; i < curSize_; i ++) {
                 new (&colorButtons_[i]) ColorButton((colorButtonManager.colorButtons_[i]));
             }
 
             return *this;
         }
 
-        size_t addButton(ColorButton colorButton) {
-            if (curSize_ > size_) {
+        size_t addColorButton(ColorButton colorButton) {
+            if (curSize_ >= size_) {
                 std::cout << "Array of buttons is full!\n";
                 return 0;
             } else {

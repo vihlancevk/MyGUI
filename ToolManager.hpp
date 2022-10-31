@@ -1,62 +1,64 @@
 #ifndef TOOL_MANAGER_HPP_
 #define TOOL_MANAGER_HPP_
 
-#include <vector>
+#include <iostream>
 #include "Tool.hpp"
 
 class ToolManager {
     public:
-        std::vector<Tool*> tools_;
+        size_t size_;
+        size_t curSize_;
+        Tool** tools_;
 
-        Color color_ = Color::BLACK;
-        Tool* activeTool_ = nullptr;
+        Tool* activeTool_ = nullptr; 
+        unsigned activeSize_ = 10;
+        Color activeColor_ = Color::BLACK;
      public:
-        ToolManager():
-            tools_()
+        ToolManager(unsigned size):
+            size_(size),
+            curSize_(0),
+            tools_((Tool**) new char[size_*sizeof(Tool*)])
             {}
         ~ToolManager() {
-            for (size_t i = 0; i < tools_.size(); i++) {
-                delete tools_[i];
-            }
+            delete (char*) tools_;
         }
 
-        void addTool(Tool* ptool) {
-            tools_.push_back(ptool);
-        }
-
-        void onMouseClick(unsigned x, unsigned y) {
-            bool isActivated = false;
-            
-            for (size_t i = 0; i < tools_.size(); i++) {
-                tools_[i]->color_ = color_;
-                
-                if (!tools_[i]->isActive_)
-                    isActivated = true;
-                
-                tools_[i]->onMouseClick(x, y);
-
-                if (tools_[i]->isActive_ && isActivated) {
-                    for (size_t j = 0; j < tools_.size(); j++) {
-                        if (j != i)
-                            tools_[j]->isActive_ = false;
-                    }
-
-                    activeTool_ = tools_[i];
-                    return;
-                } else if (!(tools_[i]->isActive_ || isActivated)) {
-                    activeTool_ = nullptr;
-                } else {
-                    isActivated = false;
+        // TODO: write a copy constructor and assignment operator
+        ToolManager(const ToolManager& toolManager):
+            size_(toolManager.size_),
+            curSize_(toolManager.curSize_),
+            tools_((Tool**) new char[size_*sizeof(Tool*)])
+            {
+                for (size_t i = 0; i < curSize_; i ++) {
+                    tools_[i] = toolManager.tools_[i];
                 }
             }
+        ToolManager& operator = (const ToolManager& toolManager) {
+            this->~ToolManager();
+
+            size_ = toolManager.size_;
+            curSize_ = toolManager.curSize_;
+            tools_ = (Tool**) new char[size_*sizeof(Tool*)];
+            for (size_t i = 0; i < curSize_; i ++) {
+                tools_[i] = toolManager.tools_[i];
+            }
+
+            return *this;
         }
 
-        void onMouseReleased(unsigned, unsigned) {}
-
-        void draw(sf::RenderWindow& window) {
-            for (size_t i = 0; i < tools_.size(); i++) {
-                tools_[i]->draw(window);
+        bool addTool(Tool* tool) {
+            if (curSize_ >= size_) {
+                std::cout << "Array of Tool is full!\n";
+                return 0;
+            } else {
+                tools_[curSize_++] = tool;
+                return 1;
             }
+        }
+
+        void setParametersOfActiveTool() {
+            activeTool_->size_ = activeSize_;
+            activeTool_->color_ = activeColor_;
         }
 };
 

@@ -18,34 +18,34 @@ class ToolButtonManager {
             toolButtons_((ToolButton**) new char[size_*sizeof(ToolButton*)])
             {}
         ~ToolButtonManager() {
-            // TODO: wtire destructor
+            delete (char*) toolButtons_;
         }
 
         // TODO: write a copy constructor and assignment operator
-        // ToolButtonManager(const ToolButtonManager& toolButtonManager):
-        //     size_(toolButtonManager.size_),
-        //     curSize_(toolButtonManager.curSize_),
-        //     toolButtons_((ToolButton**) new char[size_*sizeof(ToolButton*)])
-        //     {
-        //         for (size_t i = 0; i < size_; i ++) {
-        //             new (toolButtons_[i]) ToolButton(*toolButtonManager.toolButtons_[i]);
-        //         }
-        //     }
-        // ToolButtonManager& operator = (const ToolButtonManager& toolButtonManager) {
-        //     this->~ToolButtonManager();
-            
-        //     size_ = toolButtonManager.size_;
-        //     curSize_ = toolButtonManager.curSize_;
-        //     toolButtons_ = (ToolButton**) new char[size_*sizeof(ToolButton*)];
-        //     for (size_t i = 0; i < size_; i ++) {
-        //         new (toolButtons_[i]) ToolButton(*(toolButtonManager.toolButtons_[i]));
-        //     }
+        ToolButtonManager(const ToolButtonManager& toolButtonManager):
+            size_(toolButtonManager.size_),
+            curSize_(toolButtonManager.curSize_),
+            toolButtons_((ToolButton**) new char[size_*sizeof(ToolButton*)])
+            {
+                for (size_t i = 0; i < curSize_; i ++) {
+                    toolButtons_[i] = toolButtonManager.toolButtons_[i];
+                }
+            }
+        ToolButtonManager& operator = (const ToolButtonManager& toolButtonManager) {
+            this->~ToolButtonManager();
 
-        //     return *this;
-        // }
+            size_ = toolButtonManager.size_;
+            curSize_ = toolButtonManager.curSize_;
+            toolButtons_ = (ToolButton**) new char[size_*sizeof(ToolButton*)];
+            for (size_t i = 0; i < curSize_; i ++) {
+                toolButtons_[i] = toolButtonManager.toolButtons_[i];
+            }
+
+            return *this;
+        }
 
         size_t addTool(ToolButton* toolButton) {
-            if (curSize_ > size_) {
+            if (curSize_ >= size_) {
                 std::cout << "Array of buttons is full!\n";
                 return 0;
             } else {
@@ -64,7 +64,7 @@ class ToolButtonManager {
                 toolButtons_[i]->onMouseClick(x, y);
 
                 if (toolButtons_[i]->isActive_ && isActivated) {
-                    activeTool_ = toolButtons_[i]->tool_;
+                    activeTool_ = *toolButtons_[i]->tool_;
 
                     for (size_t j = 0; j < size_; j++) {
                         if (j != i)

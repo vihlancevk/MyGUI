@@ -1,19 +1,12 @@
 #ifndef BRUSH_HPP_
 #define BRUSH_HPP_
 
-sf::Color calculateColor(Color color);
-
 #include "Tool.hpp"
 
 class Brush: public Tool {
     public:
-        Color color_;
-        unsigned size_;
-    public:
         Brush():
-            Tool(),
-            color_(Color::BLACK),
-            size_(10)
+            Tool()
             {}
 
         ~Brush() {}
@@ -44,16 +37,5 @@ class Brush: public Tool {
             }
         }
 };
-
-sf::Color calculateColor(Color color) {
-    sf::Color sfColor
-    (
-        (sf::Uint8) ((color & 1) * 255),
-        (sf::Uint8) (((color & 2) >> 1) * 255),
-        (sf::Uint8) (((color & 4) >> 2) * 255)
-    );
-
-    return sfColor;
-}
 
 #endif // BRUSH_HPP_
