@@ -9,7 +9,7 @@ class CanvasWindow: public Widget {
         sf::VertexArray pixels_;
         bool isActive_;
         
-        const Color canvasColor_ = Color::WHITE;
+        const sf::Color canvasColor_ = sf::Color::White;
         Tool* activeTool_ = nullptr;
     public:
         CanvasWindow(unsigned x, unsigned y):
@@ -20,14 +20,13 @@ class CanvasWindow: public Widget {
                 for(unsigned i = 0; i < weight_ * hight_; i++) {
                     pixels_[i].position = sf::Vector2f(static_cast<float>(x_ + i % weight_),
                                                        static_cast<float>(y_ + i / weight_));
-                    pixels_[i].color = calculateColor(canvasColor_);
+                    pixels_[i].color = canvasColor_;
                 }
             }
         ~CanvasWindow() {}
 
-        // TODO: write a copy constructor and assignment operator
-        // CanvasWindow(const CanvasWindow& canvasWindow) = delete;
-        // CanvasWindow& operator = (const CanvasWindow& canvasWindow) = delete;
+        CanvasWindow(const CanvasWindow& canvasWindow) = delete;
+        CanvasWindow& operator = (const CanvasWindow& canvasWindow) = delete;
 
         void onMouseMove(unsigned x, unsigned y) override {
             if (!isPointInWidget(x, y)) {

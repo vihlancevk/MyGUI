@@ -9,7 +9,7 @@ class ColorButtonManager {
         size_t curSize_;
         ColorButton* colorButtons_;
 
-        Color activeColor_ = Color::BLACK;
+        sf::Color activeColor_ = sf::Color::Black;
      public:
         ColorButtonManager(size_t size):
             size_(size),
@@ -17,7 +17,7 @@ class ColorButtonManager {
             colorButtons_((ColorButton*) new char[size_*sizeof(ColorButton)])
             {}
         ~ColorButtonManager() {
-            delete (char*) colorButtons_;
+            delete [] (char*) colorButtons_;
         }
 
         ColorButtonManager(const ColorButtonManager& colorButtonManager):
@@ -47,38 +47,35 @@ class ColorButtonManager {
                 std::cout << "Array of buttons is full!\n";
                 return 0;
             } else {
-                colorButtons_[curSize_++] = colorButton;
+                :: new (&colorButtons_[curSize_ ++]) ColorButton(colorButton);
                 return 1;
             }
         }
 
-        void onMouseClick(unsigned x, unsigned y) {
-            bool isActivated = false;
-            
-            for (size_t i = 0; i < size_; i++) {
-                if (!colorButtons_[i].isActive_)
-                    isActivated = true;
-                
-                colorButtons_[i].onMouseClick(x, y);
-
-                if (colorButtons_[i].isActive_ && isActivated) {
-                    activeColor_ = colorButtons_[i].color_;
-
-                    for (size_t j = 0; j < size_; j++) {
-                        if (j != i)
-                            colorButtons_[j].isActive_ = false;
-                    }
-
-                    return;
-                } else if (!(colorButtons_[i].isActive_ || isActivated)) {
-                    activeColor_ = Color::BLACK;
-                } else {
-                    isActivated = false;
-                }
+        void onMouseMove(unsigned x, unsigned y) {
+            for (size_t i = 0; i < curSize_; i++) {
+                colorButtons_[i].onMouseMove(x, y);
             }
         }
 
-        void onMouseReleased(unsigned, unsigned) {}
+        void onMouseClick(unsigned x, unsigned y) {
+            for (size_t i = 0; i < 3; i++) {
+                colorButtons_[i].onMouseClick(x, y);
+            }
+        }
+
+        void onMouseReleased(unsigned x, unsigned y) {
+            unsigned color[3] = {};
+
+            for (size_t i = 0; i < 3; i++) {
+                colorButtons_[i].onMouseReleased(x, y);
+                color[i] = colorButtons_[i].scrollBarButton_.calculateValue();
+            }
+            
+            activeColor_ = sf::Color((sf::Uint8) color[0],
+                                     (sf::Uint8) color[1],
+                                     (sf::Uint8) color[2]);
+        }
 
         void draw(sf::RenderWindow& window) {
             for (size_t i = 0; i < size_; i++) {

@@ -18,31 +18,12 @@ class ToolButtonManager {
             toolButtons_((ToolButton**) new char[size_*sizeof(ToolButton*)])
             {}
         ~ToolButtonManager() {
-            delete (char*) toolButtons_;
+            delete [] (char*) toolButtons_;
         }
 
         // TODO: write a copy constructor and assignment operator
-        ToolButtonManager(const ToolButtonManager& toolButtonManager):
-            size_(toolButtonManager.size_),
-            curSize_(toolButtonManager.curSize_),
-            toolButtons_((ToolButton**) new char[size_*sizeof(ToolButton*)])
-            {
-                for (size_t i = 0; i < curSize_; i ++) {
-                    toolButtons_[i] = toolButtonManager.toolButtons_[i];
-                }
-            }
-        ToolButtonManager& operator = (const ToolButtonManager& toolButtonManager) {
-            this->~ToolButtonManager();
-
-            size_ = toolButtonManager.size_;
-            curSize_ = toolButtonManager.curSize_;
-            toolButtons_ = (ToolButton**) new char[size_*sizeof(ToolButton*)];
-            for (size_t i = 0; i < curSize_; i ++) {
-                toolButtons_[i] = toolButtonManager.toolButtons_[i];
-            }
-
-            return *this;
-        }
+        ToolButtonManager(const ToolButtonManager& toolButtonManager) = delete;
+        ToolButtonManager& operator = (const ToolButtonManager& toolButtonManager) = delete;
 
         size_t addTool(ToolButton* toolButton) {
             if (curSize_ >= size_) {

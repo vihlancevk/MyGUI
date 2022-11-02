@@ -3,18 +3,17 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Color.hpp"
 
 class Tool {
     public:
         unsigned size_;
-        Color color_;
+        sf::Color color_;
 
         bool isActive_;
     public:
         Tool():
             size_(10),
-            color_(Color::BLACK),
+            color_(sf::Color::Black),
             isActive_(false)
             {}
 

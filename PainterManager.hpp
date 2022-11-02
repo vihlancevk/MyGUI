@@ -8,10 +8,10 @@
 
 class PainterManager {
     public:
-        ToolManager toolManager_;
-        ColorButtonManager colorButtonManager_;
-        ToolButtonManager toolButtonManager_;
-        CanvasWindow canvasWindow_;
+        ToolManager& toolManager_;
+        ColorButtonManager& colorButtonManager_;
+        ToolButtonManager& toolButtonManager_;
+        CanvasWindow& canvasWindow_;
     public:
         PainterManager(ToolManager& toolManager, ColorButtonManager& colorButtonManager,
                        ToolButtonManager& toolButtonManager, CanvasWindow& canvasWindow):
@@ -23,6 +23,7 @@ class PainterManager {
         ~PainterManager() {}
 
         void onMouseMove(unsigned x, unsigned y) {
+            colorButtonManager_.onMouseMove(x, y);
             canvasWindow_.onMouseMove(x, y);
         }
 

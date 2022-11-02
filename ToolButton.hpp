@@ -20,33 +20,11 @@ class ToolButton: public AbstractButton {
                 image_.loadFromFile(image);
             }
         ~ToolButton() {
-            delete (char*) tool_;
+            delete [] (char*) tool_;
         }
 
-        // TODO: write a copy constructor and assignment operator
-        ToolButton(const ToolButton& toolButton):
-            AbstractButton(toolButton.x_, toolButton.y_),
-            image_(toolButton.image_),
-            tool_((Tool**) new char[sizeof(Tool*)])
-            {
-                tool_[curSize_++] = *toolButton.tool_;
-            }
-        ToolButton& operator = (const ToolButton& toolButton) {
-            this->~AbstractButton();
-
-            x_ = toolButton.x_;
-            y_ = toolButton.y_;
-            weight_ = toolButton.weight_;
-            hight_ = toolButton.hight_;
-            isActive_ = toolButton.isActive_;
-            image_ = toolButton.image_;
-            size_ = 1;
-            curSize_ = 0;
-            tool_ = (Tool**) new char[sizeof(Tool*)];
-            tool_[curSize_++] = *toolButton.tool_;
-
-            return *this;
-        }
+        ToolButton(const ToolButton& toolButton) = delete;
+        ToolButton& operator = (const ToolButton& toolButton) = delete;
 
         size_t setTool(Tool* tool) {
             if (curSize_ >= size_) {
@@ -73,7 +51,7 @@ class ToolButton: public AbstractButton {
                 
                 sf::CircleShape point(pointRadius);
                 point.setPosition(sf::Vector2f((float) x_ + pointRadius, (float) y_ + pointRadius));
-                point.setFillColor(calculateColor(Color::BLACK));
+                point.setFillColor(sf::Color::Black);
             
                 window.draw(point);
             }

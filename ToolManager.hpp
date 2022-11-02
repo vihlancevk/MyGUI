@@ -12,7 +12,7 @@ class ToolManager {
 
         Tool* activeTool_ = nullptr; 
         unsigned activeSize_ = 10;
-        Color activeColor_ = Color::BLACK;
+        sf::Color activeColor_ = sf::Color::Black;
      public:
         ToolManager(unsigned size):
             size_(size),
@@ -20,31 +20,11 @@ class ToolManager {
             tools_((Tool**) new char[size_*sizeof(Tool*)])
             {}
         ~ToolManager() {
-            delete (char*) tools_;
+            delete [] (char*) tools_;
         }
 
-        // TODO: write a copy constructor and assignment operator
-        ToolManager(const ToolManager& toolManager):
-            size_(toolManager.size_),
-            curSize_(toolManager.curSize_),
-            tools_((Tool**) new char[size_*sizeof(Tool*)])
-            {
-                for (size_t i = 0; i < curSize_; i ++) {
-                    tools_[i] = toolManager.tools_[i];
-                }
-            }
-        ToolManager& operator = (const ToolManager& toolManager) {
-            this->~ToolManager();
-
-            size_ = toolManager.size_;
-            curSize_ = toolManager.curSize_;
-            tools_ = (Tool**) new char[size_*sizeof(Tool*)];
-            for (size_t i = 0; i < curSize_; i ++) {
-                tools_[i] = toolManager.tools_[i];
-            }
-
-            return *this;
-        }
+        ToolManager(const ToolManager& toolManager) = delete;
+        ToolManager& operator = (const ToolManager& toolManager) = delete;
 
         bool addTool(Tool* tool) {
             if (curSize_ >= size_) {
@@ -57,8 +37,10 @@ class ToolManager {
         }
 
         void setParametersOfActiveTool() {
-            activeTool_->size_ = activeSize_;
-            activeTool_->color_ = activeColor_;
+            if (activeTool_) {
+                activeTool_->size_ = activeSize_;
+                activeTool_->color_ = activeColor_;
+            }
         }
 };
 

@@ -24,7 +24,7 @@ class Widget {
             hight_(hight)
             {}
 
-        bool isPointInWidget(unsigned x, unsigned y) {
+        virtual bool isPointInWidget(unsigned x, unsigned y) {
             if (x_ <= x && x <= (x_ + weight_)) {
                 if (y_ <= y && y <= (y_ + hight_)) {
                     return true;
