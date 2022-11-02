@@ -19,9 +19,7 @@ class Tool {
 
         virtual void actionWithCanvas(sf::VertexArray&,
                                       unsigned, unsigned, unsigned, unsigned,
-                                      unsigned, unsigned) {
-            std::cout << "Now active is Tool::actionWithCanvas\n";
-        }
+                                      unsigned, unsigned) {}
 
         virtual ~Tool() = default;
 };

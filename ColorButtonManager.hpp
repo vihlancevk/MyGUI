@@ -5,15 +5,13 @@
 
 class ColorButtonManager {
     public:
-        size_t size_;
-        size_t curSize_;
+        static const size_t size_ = 3;
+        size_t curSize_ = 0;
         ColorButton* colorButtons_;
 
         sf::Color activeColor_ = sf::Color::Black;
      public:
-        ColorButtonManager(size_t size):
-            size_(size),
-            curSize_(0),
+        ColorButtonManager():
             colorButtons_((ColorButton*) new char[size_*sizeof(ColorButton)])
             {}
         ~ColorButtonManager() {
@@ -21,7 +19,6 @@ class ColorButtonManager {
         }
 
         ColorButtonManager(const ColorButtonManager& colorButtonManager):
-            size_(colorButtonManager.size_),
             curSize_(colorButtonManager.curSize_),
             colorButtons_((ColorButton*) new char[size_*sizeof(ColorButton)])
             {
@@ -32,7 +29,6 @@ class ColorButtonManager {
         ColorButtonManager& operator = (const ColorButtonManager& colorButtonManager) {
             this->~ColorButtonManager();
             
-            size_ = colorButtonManager.size_;
             curSize_ = colorButtonManager.curSize_;
             colorButtons_ = (ColorButton*) new char[size_*sizeof(ColorButton)];
             for (size_t i = 0; i < curSize_; i ++) {
@@ -47,7 +43,7 @@ class ColorButtonManager {
                 std::cout << "Array of buttons is full!\n";
                 return 0;
             } else {
-                :: new (&colorButtons_[curSize_ ++]) ColorButton(colorButton);
+                :: new (&colorButtons_[curSize_++]) ColorButton(colorButton);
                 return 1;
             }
         }
@@ -59,15 +55,15 @@ class ColorButtonManager {
         }
 
         void onMouseClick(unsigned x, unsigned y) {
-            for (size_t i = 0; i < 3; i++) {
+            for (size_t i = 0; i < curSize_; i++) {
                 colorButtons_[i].onMouseClick(x, y);
             }
         }
 
         void onMouseReleased(unsigned x, unsigned y) {
-            unsigned color[3] = {};
+            unsigned color[size_] = {};
 
-            for (size_t i = 0; i < 3; i++) {
+            for (size_t i = 0; i < curSize_; i++) {
                 colorButtons_[i].onMouseReleased(x, y);
                 color[i] = colorButtons_[i].scrollBarButton_.calculateValue();
             }
@@ -78,7 +74,7 @@ class ColorButtonManager {
         }
 
         void draw(sf::RenderWindow& window) {
-            for (size_t i = 0; i < size_; i++) {
+            for (size_t i = 0; i < curSize_; i++) {
                 colorButtons_[i].draw(window);
             }
         }

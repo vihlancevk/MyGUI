@@ -15,15 +15,6 @@ const unsigned SCREEN_HIGHT = 1080;
 const char *SCREEN_TITLE = "";
 const unsigned FRAME_RATE_LIMIT = 144;
 
-// class MyToolManager {
-//     public:
-//         MyToolManager(std::initializer_list<std::unique_ptr<Tool>> tools)
-//             : m_tools(tools) {};
-
-//     private:
-//         std::vector<std::unique_ptr<Tool>> m_tools;
-// };
-
 int main() {
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
@@ -32,10 +23,6 @@ int main() {
     toolManager.addTool(new Brush());
     toolManager.addTool(new Eraser());
 
-    // MyToolManager mgr {
-    //     std::make_unique<Brush>(),
-    //     std::make_unique<Eraser>()
-    // };
 
     const size_t nColorButtons = 3;
     ColorButton colorButtons[nColorButtons] = 
@@ -45,7 +32,7 @@ int main() {
         ColorButton(1700, 600, sf::Color::Blue)
     };
 
-    ColorButtonManager colorButtonManager(nColorButtons);
+    ColorButtonManager colorButtonManager;
     for (size_t i = 0; i < nColorButtons; i++){
         colorButtonManager.addColorButton(colorButtons[i]);   
     }

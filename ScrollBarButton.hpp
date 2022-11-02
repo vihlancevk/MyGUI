@@ -33,10 +33,10 @@ class ScrollBarButton: public AbstractButton {
         }
 
         void onMouseMove(unsigned x, unsigned y) override {
-            if (isActive_ && x_ + 2 * pointRadius_ > x) {
+            if (isActive_ && x_ + pointRadius_ > x) {
                 isActive_ = false;
 
-                positionX_ = x_ + 2 * pointRadius_;
+                positionX_ = x_ + pointRadius_;
                 return;
             }
 
@@ -71,19 +71,33 @@ class ScrollBarButton: public AbstractButton {
         }
 
         void draw(sf::RenderWindow& window) override {
-            sf::VertexArray line(sf::Lines, 2);
-            line[0].position = sf::Vector2f((float) (x_ + 2 * pointRadius_),
-                                            (float) (y_ + hight_ / 2));
-            line[0].color = sf::Color::Black;
-            line[1].position = sf::Vector2f((float) (x_ + weight_ - 2 * pointRadius_),
-                                            (float) (y_ + hight_ / 2));
-            line[1].color = sf::Color::Black;
+            float weight = 2;
+
+            sf::RectangleShape lineHorizontal(sf::Vector2f((float) weight_, weight));
+            lineHorizontal.setFillColor(sf::Color::Black);
+
+            lineHorizontal.setPosition(sf::Vector2f((float) x_, (float) (y_ + hight_ / 2 - pointRadius_) - weight));
+            window.draw(lineHorizontal);
+            
+            lineHorizontal.setPosition(sf::Vector2f((float) x_, (float) (y_ + hight_ / 2 + pointRadius_)));
+            window.draw(lineHorizontal);
+
+            sf::RectangleShape lineVerticalLeft(sf::Vector2f((float) (2 * pointRadius_), weight));
+            lineVerticalLeft.setPosition(sf::Vector2f((float) x_ + weight, (float) (y_ + hight_ / 2 - pointRadius_)));
+            lineVerticalLeft.setFillColor(sf::Color::Black);
+            lineVerticalLeft.rotate(90);
+            window.draw(lineVerticalLeft);
+
+            sf::RectangleShape lineVerticalRight(sf::Vector2f((float) (2 * pointRadius_), weight));
+            lineVerticalRight.setPosition(sf::Vector2f((float) (x_ + weight_), (float) (y_ + hight_ / 2 - pointRadius_)));
+            lineVerticalRight.setFillColor(sf::Color::Black);
+            lineVerticalRight.rotate(90);
+            window.draw(lineVerticalRight);
 
             sf::CircleShape point((float) pointRadius_);
             point.setPosition(sf::Vector2f((float) positionX_, (float) positionY_));
             point.setFillColor(sf::Color::Black);
 
-            window.draw(line);
             window.draw(point);
         }
 

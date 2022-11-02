@@ -38,7 +38,7 @@ class ToolButtonManager {
         void onMouseClick(unsigned x, unsigned y) {
             bool isActivated = false;
             
-            for (size_t i = 0; i < size_; i++) {
+            for (size_t i = 0; i < curSize_; i++) {
                 if (!toolButtons_[i]->isActive_)
                     isActivated = true;
                 
@@ -64,7 +64,7 @@ class ToolButtonManager {
         void onMouseReleased(unsigned, unsigned) {}
 
         void draw(sf::RenderWindow& window) {
-            for (size_t i = 0; i < size_; i++) {
+            for (size_t i = 0; i < curSize_; i++) {
                 toolButtons_[i]->draw(window);
             }
         }
