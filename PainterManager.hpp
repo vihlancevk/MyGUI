@@ -36,12 +36,6 @@ class PainterManager {
             colorButtonManager_.onMouseClick(x, y);
             sizeButtonManager_.onMouseClick(x, y);
             toolButtonManager_.onMouseClick(x, y);
-
-            toolManager_.activeColor_ = colorButtonManager_.activeColor_;
-            toolManager_.activeSize_ = sizeButtonManager_.activeSize_;
-            toolManager_.activeTool_ = toolButtonManager_.activeTool_;
-            toolManager_.setParametersOfActiveTool();
-
             canvasWindow_.activeTool_ = toolButtonManager_.activeTool_;
             canvasWindow_.onMouseClick(x, y);
         }
@@ -50,10 +44,17 @@ class PainterManager {
             colorButtonManager_.onMouseReleased(x, y);
             sizeButtonManager_.onMouseReleased(x, y);
             toolButtonManager_.onMouseReleased(x, y);
+
+            toolManager_.activeColor_ = colorButtonManager_.activeColor_;
+            toolManager_.activeSize_ = sizeButtonManager_.activeSize_;
+            toolManager_.activeTool_ = toolButtonManager_.activeTool_;
+            toolManager_.setParametersOfActiveTool();
+
             canvasWindow_.onMouseReleased(x, y);
         }
 
         void draw(sf::RenderWindow& window) {
+            toolManager_.draw(window);
             colorButtonManager_.draw(window);
             sizeButtonManager_.draw(window);
             toolButtonManager_.draw(window);

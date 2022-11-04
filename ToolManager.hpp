@@ -3,21 +3,24 @@
 
 #include <iostream>
 #include "Tool.hpp"
+#include "ToolPalette.hpp"
 
 class ToolManager {
     public:
         size_t size_;
         size_t curSize_;
         Tool** tools_;
+        ToolPalette& toolPalette_;
 
         Tool* activeTool_ = nullptr; 
         unsigned activeSize_ = 10;
         sf::Color activeColor_ = sf::Color::Black;
      public:
-        ToolManager(unsigned size):
+        ToolManager(unsigned size, ToolPalette& toolPalette):
             size_(size),
             curSize_(0),
-            tools_((Tool**) new char[size_*sizeof(Tool*)])
+            tools_((Tool**) new char[size_*sizeof(Tool*)]),
+            toolPalette_(toolPalette)
             {}
         ~ToolManager() {
             delete [] (char*) tools_;
@@ -41,6 +44,11 @@ class ToolManager {
                 activeTool_->size_ = activeSize_;
                 activeTool_->color_ = activeColor_;
             }
+        }
+
+        void draw(sf::RenderWindow& window) {
+            toolPalette_.setTool(activeTool_);
+            toolPalette_.draw(window);
         }
 };
 
