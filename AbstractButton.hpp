@@ -11,6 +11,12 @@ class AbstractButton: public Widget {
             Widget(x, y, 160, 90),
             isActive_(false)
             {}
+
+        AbstractButton(unsigned x, unsigned y, unsigned weight, unsigned hight):
+            Widget(x, y, weight, hight),
+            isActive_(false)
+            {}
+
         ~AbstractButton() {}
 
         void onMouseClick(unsigned x, unsigned y) override {

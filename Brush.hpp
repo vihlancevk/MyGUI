@@ -29,7 +29,7 @@ class Brush: public Tool {
             }
 
             unsigned startPixel = (startY) * canvasWeight + (startX);
-        
+
             for (unsigned i = 0; i < 2*size_; i++) {
                 for (unsigned j = 0; j < 2*size_; j++) {
                     pixels[startPixel + i * canvasWeight + j].color = color_;

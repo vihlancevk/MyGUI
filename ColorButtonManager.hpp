@@ -40,7 +40,7 @@ class ColorButtonManager {
 
         size_t addColorButton(ColorButton colorButton) {
             if (curSize_ >= size_) {
-                std::cout << "Array of buttons is full!\n";
+                std::cout << "Array of color buttons is full!\n";
                 return 0;
             } else {
                 :: new (&colorButtons_[curSize_++]) ColorButton(colorButton);

@@ -5,7 +5,9 @@
 #include "ToolManager.hpp"
 #include "ScrollBarButton.hpp"
 #include "ColorButton.hpp"
+#include "SizeButton.hpp"
 #include "ColorButtonManager.hpp"
+#include "SizeButtonManager.hpp"
 #include "ToolButtonManager.hpp"
 #include "CanvasWindow.hpp"
 #include "PainterManager.hpp"
@@ -23,7 +25,6 @@ int main() {
     toolManager.addTool(new Brush());
     toolManager.addTool(new Eraser());
 
-
     const size_t nColorButtons = 3;
     ColorButton colorButtons[nColorButtons] = 
     {
@@ -37,6 +38,9 @@ int main() {
         colorButtonManager.addColorButton(colorButtons[i]);   
     }
 
+    SizeButton sizeButton(1700, 700, 160, 90);
+    SizeButtonManager sizeButtonManager(sizeButton);
+
     ToolButton brushButton(225, 175, "images/brush.png");
     brushButton.setTool(toolManager.tools_[0]);
     ToolButton eraserButton(225, 300, "images/eraser.png");
@@ -48,7 +52,7 @@ int main() {
 
     CanvasWindow canvasWindow(375, 175);
 
-    PainterManager painterManager(toolManager, colorButtonManager, toolButtonManager, canvasWindow);
+    PainterManager painterManager(toolManager, colorButtonManager, sizeButtonManager, toolButtonManager, canvasWindow);
 
 	sf::Event event;
 

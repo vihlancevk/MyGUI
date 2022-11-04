@@ -102,10 +102,12 @@ class ScrollBarButton: public AbstractButton {
         }
 
         unsigned calculateValue() {
-            unsigned length = weight_ - 4 * pointRadius_, value = rightValue_ - leftValue_;
-            unsigned activeLength = positionX_ - x_ - 2 * pointRadius_;
+            unsigned length = weight_ - 4 * pointRadius_;
+            unsigned value = rightValue_ - leftValue_;
             
-            unsigned activeValue = (value * activeLength) / length;
+            unsigned activeLength = positionX_ - x_ - pointRadius_;
+            // std::cout << "length: " << length << ", value: " << value << ", activeLength: " << activeLength << "\n";
+            unsigned activeValue = (value * activeLength) / length + leftValue_;
 
             return activeValue;
         }
