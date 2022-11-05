@@ -25,8 +25,8 @@ class ScrollBarButton: public AbstractButton {
         ~ScrollBarButton() {}
 
         bool isPointInWidget(unsigned x, unsigned y) override {
-            if (positionX_ - 2 * pointRadius_ <= x && x <= positionX_ + 2 * pointRadius_)
-                if (positionY_ - pointRadius_ <= y && y <= positionY_ + pointRadius_)
+            if (positionX_ <= x && x <= positionX_ + 2 * pointRadius_)
+                if (positionY_ <= y && y <= positionY_ + 2 * pointRadius_)
                     return true;
 
             return false;
@@ -40,20 +40,23 @@ class ScrollBarButton: public AbstractButton {
                 return;
             }
 
-            if (isActive_ && x > x_ + weight_ - 2 * pointRadius_) {
+            if (isActive_ && x > x_ + weight_ - pointRadius_) {
                 isActive_ = false;
 
                 positionX_ = x_ + weight_ - 3 * pointRadius_;
                 return;
             }
 
-            if (isActive_ && (y_ + hight_ / 2 - 2 * pointRadius_ > y || y > y_ + hight_ / 2 + pointRadius_)) {
+            if (isActive_ && (y_ + hight_ / 2 - pointRadius_ > y || y > y_ + hight_ / 2 + pointRadius_)) {
                 isActive_ = false;
 
                 positionX_ = x; 
             }
 
             if (isActive_) {
+                if (x > x_ + weight_ - 3 * pointRadius_)
+                    return;
+
                 positionX_ = x;
             }
         }
