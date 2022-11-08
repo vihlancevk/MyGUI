@@ -37,10 +37,10 @@ class ToolButton: public AbstractButton {
         }
 
         void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape frame(sf::Vector2f((float) weight_ + 2 * outlineThickness_,
-                                                  (float) hight_ + 2 * outlineThickness_));
-            frame.setPosition(sf::Vector2f((float) (x_) - outlineThickness_,
-                                           (float) (y_) - outlineThickness_));
+            sf::RectangleShape frame(sf::Vector2f((float) weight_,
+                                                  (float) hight_));
+            frame.setPosition(sf::Vector2f((float) (x_),
+                                           (float) (y_)));
             frame.setFillColor(sf::Color::White);
             frame.setOutlineThickness(outlineThickness_);
             frame.setOutlineColor(sf::Color::Black);
