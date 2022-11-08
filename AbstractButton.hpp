@@ -7,11 +7,6 @@ class AbstractButton: public Widget {
     public:
         bool isActive_;
     public:
-        AbstractButton(unsigned x, unsigned y):
-            Widget(x, y, 160, 90),
-            isActive_(false)
-            {}
-
         AbstractButton(unsigned x, unsigned y, unsigned weight, unsigned hight):
             Widget(x, y, weight, hight),
             isActive_(false)

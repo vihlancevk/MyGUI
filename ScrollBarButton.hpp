@@ -10,10 +10,10 @@ class ScrollBarButton: public AbstractButton {
         
         unsigned positionX_, positionY_;
 
-        unsigned pointRadius_ = 10;
+        const unsigned pointRadius_ = 10;
     public:
-        ScrollBarButton(unsigned x, unsigned y, unsigned leftValue, unsigned rightValue):
-            AbstractButton(x, y),
+        ScrollBarButton(unsigned x, unsigned y, unsigned weight, unsigned hight, unsigned leftValue, unsigned rightValue):
+            AbstractButton(x, y, weight, hight),
             leftValue_(leftValue),
             rightValue_(rightValue),
             positionX_(0),
@@ -109,7 +109,6 @@ class ScrollBarButton: public AbstractButton {
             unsigned value = rightValue_ - leftValue_;
             
             unsigned activeLength = positionX_ - x_ - pointRadius_;
-            // std::cout << "length: " << length << ", value: " << value << ", activeLength: " << activeLength << "\n";
             unsigned activeValue = (value * activeLength) / length + leftValue_;
 
             return activeValue;

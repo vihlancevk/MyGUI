@@ -12,6 +12,7 @@
 #include "ToolButtonManager.hpp"
 #include "CanvasWindow.hpp"
 #include "PainterManager.hpp"
+#include "CurvesFilterWindow.hpp"
 
 const unsigned SCREEN_WEIGHT = 1920;
 const unsigned SCREEN_HIGHT = 1080;
@@ -22,6 +23,13 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WEIGHT, SCREEN_HIGHT), SCREEN_TITLE);
 	window.setFramerateLimit(FRAME_RATE_LIMIT);
 
+    sf::VertexArray pixels(sf::Points, SCREEN_WEIGHT * SCREEN_HIGHT);
+    for(unsigned i = 0; i < SCREEN_WEIGHT * SCREEN_HIGHT; i++) {
+        pixels[i].position = sf::Vector2f(static_cast<float>(i % SCREEN_WEIGHT),
+                                          static_cast<float>(i / SCREEN_WEIGHT));
+        pixels[i].color = sf::Color::White;
+    }
+
     ToolPalette toolPalette(275, 130, 400, 30);
 
     ToolManager toolManager(2, toolPalette);
@@ -31,9 +39,9 @@ int main() {
     const size_t nColorButtons = 3;
     ColorButton colorButtons[nColorButtons] = 
     {
-        ColorButton(1600, 175, sf::Color::Red),
-        ColorButton(1600, 275, sf::Color::Green),
-        ColorButton(1600, 375, sf::Color::Blue)
+        ColorButton(1600, 175, 160, 90, sf::Color::Red),
+        ColorButton(1600, 275, 160, 90, sf::Color::Green),
+        ColorButton(1600, 375, 160, 90, sf::Color::Blue)
     };
 
     ColorButtonManager colorButtonManager;
@@ -44,20 +52,23 @@ int main() {
     SizeButton sizeButton(1600, 805, 160, 90);
     SizeButtonManager sizeButtonManager(sizeButton);
 
-    ToolButton brushButton(125, 225, "images/brush.png");
+    ToolButton brushButton(100, 225, 135, 90, "images/brush.png");
     brushButton.setTool(toolManager.tools_[0]);
-    ToolButton eraserButton(125, 350, "images/eraser.png");
+    ToolButton eraserButton(100, 350, 135, 90, "images/eraser.png");
     eraserButton.setTool(toolManager.tools_[1]);
 
     ToolButtonManager toolButtonManager(2);
     toolButtonManager.addTool(&brushButton);
     toolButtonManager.addTool(&eraserButton);
 
-    CanvasWindow canvasWindow(275, 175);
+    CanvasWindow canvasWindow(275, 175, 1280, 720);
 
     PainterManager painterManager(toolManager, colorButtonManager, sizeButtonManager, toolButtonManager, canvasWindow);
 
+    CurvesFilterWindow curvesFilterWindow(290, 190, 800, 450);
+
 	sf::Event event;
+    unsigned prevKeyCode = 0;
 
 	while (window.isOpen()) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
@@ -71,12 +82,13 @@ int main() {
 				if (event.key.code == sf::Keyboard::Escape)
                     window.close();
 
-                if (event.key.code == sf::Keyboard::W)
-                    continue;
-
-                if (event.key.code == sf::Keyboard::S)
-                    continue;
-			}
+                if (event.key.code == sf::Keyboard::N) {
+                    if (prevKeyCode == sf::Keyboard::LControl)
+                        curvesFilterWindow.onKeyboard();
+                }
+			
+                prevKeyCode = event.key.code;
+            }
 
             if (event.type == sf::Event::MouseButtonPressed) {
                 painterManager.onMouseClick((unsigned) mousePosition.x, (unsigned) mousePosition.y);
@@ -88,7 +100,9 @@ int main() {
 		}
 
         painterManager.onMouseMove((unsigned) mousePosition.x, (unsigned) mousePosition.y);
+        window.draw(pixels);
         painterManager.draw(window);
+        curvesFilterWindow.draw(window);
         window.display();
 		window.clear();
 	}

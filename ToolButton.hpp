@@ -12,8 +12,8 @@ class ToolButton: public AbstractButton {
         size_t curSize_ = 0;
         Tool** tool_;
     public:
-        ToolButton(unsigned x, unsigned y, const char* image):
-            AbstractButton(x, y),
+        ToolButton(unsigned x, unsigned y, unsigned weight, unsigned hight, const char* image):
+            AbstractButton(x, y, weight, hight),
             image_(),
             tool_((Tool**) new char[sizeof(Tool*)])
             {
@@ -37,13 +37,22 @@ class ToolButton: public AbstractButton {
         }
 
         void draw(sf::RenderWindow& window) override {
+            sf::RectangleShape frame(sf::Vector2f((float) weight_ + 2 * outlineThickness_,
+                                                  (float) hight_ + 2 * outlineThickness_));
+            frame.setPosition(sf::Vector2f((float) (x_) - outlineThickness_,
+                                           (float) (y_) - outlineThickness_));
+            frame.setFillColor(sf::Color::White);
+            frame.setOutlineThickness(outlineThickness_);
+            frame.setOutlineColor(sf::Color::Black);
+
             sf::Texture texture;
-            texture.loadFromImage(image_/*, sf::IntRect(0, 0, 160, 90)*/);
+            texture.loadFromImage(image_, sf::IntRect(0, 0, (int) weight_, (int) hight_));
 
             sf::Sprite sprite;
             sprite.setTexture(texture);
             sprite.setPosition((float) x_, (float) y_);
             
+            window.draw(frame);
             window.draw(sprite);
 
             if (isActive_) {

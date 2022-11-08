@@ -10,16 +10,10 @@ class ColorButton: public AbstractButton {
 
         ScrollBarButton scrollBarButton_;
     public:
-        ColorButton():
-            AbstractButton(0, 0),
-            color_(sf::Color::White),
-            scrollBarButton_(ScrollBarButton(0, 0, 0, 255))
-            {}
-
-        ColorButton(unsigned x, unsigned y, sf::Color color):
-            AbstractButton(x, y),
+        ColorButton(unsigned x, unsigned y, unsigned weight, unsigned hight, sf::Color color):
+            AbstractButton(x, y, weight, hight),
             color_(color),
-            scrollBarButton_(ScrollBarButton(x, y, 0, 255))
+            scrollBarButton_(ScrollBarButton(x, y, weight, hight, 0, 255))
             {}
         ~ColorButton() {}
 

@@ -20,9 +20,12 @@ class ToolPalette: public Widget {
         }
 
         void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape toolPalette(sf::Vector2f((float) weight_, (float) hight_));
-            toolPalette.setPosition(sf::Vector2f((float) x_, (float) y_));
+            sf::RectangleShape toolPalette(sf::Vector2f((float) weight_ + 2 * outlineThickness_,
+                                                        (float) hight_ + 2 * outlineThickness_));
+            toolPalette.setPosition(sf::Vector2f((float) x_ - outlineThickness_, (float) y_ - outlineThickness_));
             toolPalette.setFillColor(sf::Color::White);
+            toolPalette.setOutlineThickness(outlineThickness_);
+            toolPalette.setOutlineColor(sf::Color::Black);
 
             if (tool_) {
                 sf::RectangleShape line(sf::Vector2f((float) (3 * weight_ / 4), (float) tool_->size_));

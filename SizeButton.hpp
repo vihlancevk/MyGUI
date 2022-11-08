@@ -12,7 +12,7 @@ class SizeButton: public AbstractButton {
     public:
         SizeButton(unsigned x, unsigned y, unsigned weight, unsigned hight):
             AbstractButton(x, y, weight, hight),
-            scrollBarButton_(ScrollBarButton(x, y, 5, 25))
+            scrollBarButton_(ScrollBarButton(x, y, weight, hight, 5, 25))
             {}
         ~SizeButton() {}
 
@@ -31,9 +31,13 @@ class SizeButton: public AbstractButton {
         }
 
         void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape sizeButton( sf::Vector2f((float) weight_, (float) hight_));
-            sizeButton.setPosition(sf::Vector2f((float) x_, (float) y_));
+            sf::RectangleShape sizeButton(sf::Vector2f((float) (weight_) + 2 * outlineThickness_,
+                                                       (float) (hight_) + 2 * outlineThickness_));
+            sizeButton.setPosition(sf::Vector2f((float) (x_) - outlineThickness_,
+                                                (float) (y_) - outlineThickness_));
             sizeButton.setFillColor(sf::Color::White);
+            sizeButton.setOutlineThickness(outlineThickness_);
+            sizeButton.setOutlineColor(sf::Color::Black);
 
             window.draw(sizeButton);
             scrollBarButton_.draw(window);

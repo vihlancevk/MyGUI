@@ -9,14 +9,9 @@ class Widget {
         unsigned x_, y_;
 
         unsigned weight_, hight_;
-    public:
-        Widget():
-            x_(0),
-            y_(0),
-            weight_(0),
-            hight_(0)
-            {}
 
+        float outlineThickness_ = 3;
+    public:
         Widget(unsigned x, unsigned y, unsigned weight, unsigned hight):
             x_(x),
             y_(y),

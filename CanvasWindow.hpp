@@ -12,9 +12,9 @@ class CanvasWindow: public Widget {
         const sf::Color canvasColor_ = sf::Color::White;
         Tool* activeTool_ = nullptr;
     public:
-        CanvasWindow(unsigned x, unsigned y):
-            Widget(x, y, 1280, 720),
-            pixels_(sf::Points, 1280 * 720),
+        CanvasWindow(unsigned x, unsigned y, unsigned weight, unsigned hight):
+            Widget(x, y, weight, hight),
+            pixels_(sf::Points, weight * hight),
             isActive_(false)
             {
                 for(unsigned i = 0; i < weight_ * hight_; i++) {
@@ -49,6 +49,15 @@ class CanvasWindow: public Widget {
         }
 
         void draw(sf::RenderWindow& window) override {
+            sf::RectangleShape frame(sf::Vector2f((float) weight_ + 2 * outlineThickness_,
+                                                  (float) hight_ + 2 * outlineThickness_));
+            frame.setPosition(sf::Vector2f((float) (x_) - outlineThickness_,
+                                           (float) (y_) - outlineThickness_));
+            frame.setFillColor(sf::Color::White);
+            frame.setOutlineThickness(outlineThickness_);
+            frame.setOutlineColor(sf::Color::Black);
+
+            window.draw(frame);
             window.draw(pixels_);
         }
 };

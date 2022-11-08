@@ -3,18 +3,16 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 class Tool {
     public:
         unsigned size_;
         sf::Color color_;
-
-        bool isActive_;
     public:
-        Tool():
-            size_(10),
-            color_(sf::Color::Black),
-            isActive_(false)
+        Tool(unsigned size = 10, sf::Color color = sf::Color::Black):
+            size_(size),
+            color_(color)
             {}
 
         virtual void actionWithCanvas(sf::VertexArray&,
