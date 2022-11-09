@@ -10,9 +10,9 @@
 #include "ColorButtonManager.hpp"
 #include "SizeButtonManager.hpp"
 #include "ToolButtonManager.hpp"
+#include "CurvesFilterWindow.hpp"
 #include "CanvasWindow.hpp"
 #include "PainterManager.hpp"
-#include "CurvesFilterWindow.hpp"
 
 const unsigned SCREEN_WEIGHT = 1920;
 const unsigned SCREEN_HIGHT = 1080;
@@ -61,14 +61,14 @@ int main() {
     toolButtonManager.addTool(&brushButton);
     toolButtonManager.addTool(&eraserButton);
 
+    CurvesFilterWindow curvesFilterWindow(400, 400, 800, 450);
+
     CanvasWindow canvasWindow(275, 175, 1280, 720);
 
-    PainterManager painterManager(toolManager, colorButtonManager, sizeButtonManager, toolButtonManager, canvasWindow);
-
-    CurvesFilterWindow curvesFilterWindow(290, 190, 800, 450);
+    PainterManager painterManager(toolManager, colorButtonManager, sizeButtonManager,
+                                  toolButtonManager, curvesFilterWindow, canvasWindow);
 
 	sf::Event event;
-    unsigned prevKeyCode = 0;
 
 	while (window.isOpen()) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
@@ -82,12 +82,7 @@ int main() {
 				if (event.key.code == sf::Keyboard::Escape)
                     window.close();
 
-                if (event.key.code == sf::Keyboard::N) {
-                    if (prevKeyCode == sf::Keyboard::LControl)
-                        curvesFilterWindow.onKeyboard();
-                }
-			
-                prevKeyCode = event.key.code;
+                painterManager.onKeyboard(event.key.code);
             }
 
             if (event.type == sf::Event::MouseButtonPressed) {
@@ -102,7 +97,6 @@ int main() {
         painterManager.onMouseMove((unsigned) mousePosition.x, (unsigned) mousePosition.y);
         window.draw(pixels);
         painterManager.draw(window);
-        curvesFilterWindow.draw(window);
         window.display();
 		window.clear();
 	}

@@ -37,7 +37,7 @@ class Widget {
         
         virtual void onMouseReleased(unsigned, unsigned) {}
         
-        virtual void onKeyboard() {}
+        virtual void onKeyboard(int) {}
 
         virtual void draw(sf::RenderWindow&) {}
 
