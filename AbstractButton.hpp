@@ -14,9 +14,12 @@ class AbstractButton: public Widget {
 
         ~AbstractButton() {}
 
-        void onMouseClick(unsigned x, unsigned y) override {
-            if (isPointInWidget(x, y))
+        void on_mouse_press(Pair<int> point) override {
+            contains(point);
+            if (isContains_) {
                 isActive_ = (isActive_) ? false : true;
+                isContains_ = false;
+            }
         }
 };
 

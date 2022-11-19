@@ -23,22 +23,27 @@ class Button: public AbstractButton {
             }
         ~Button() {}
 
-        void onMouseClick(unsigned x, unsigned y) override {
-            if (isPointInWidget(x, y))
+        void on_mouse_press(Pair<int> point) override {
+            contains(point);
+            if (isContains_) {
                 isActive_ = true;
+                isContains_ = false;
+            }
         }
 
-        void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape button(sf::Vector2f((float) (weight_),
-                                                   (float) (hight_)));
-            button.setPosition(sf::Vector2f((float) (x_),
-                                            (float) (y_)));
-            button.setFillColor(sf::Color::White);
-            button.setOutlineThickness(outlineThickness_);
-            button.setOutlineColor(sf::Color::Black);
-            window.draw(button);
+        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
+            // sf::RectangleShape button(sf::Vector2f((float) (weight_),
+            //                                        (float) (hight_)));
+            // button.setPosition(sf::Vector2f((float) (x_),
+            //                                 (float) (y_)));
+            // button.setFillColor(sf::Color::White);
+            // button.setOutlineThickness(outlineThickness_);
+            // button.setOutlineColor(sf::Color::Black);
+            // window.draw(button);
 
-            window.draw(text_);
+            // window.draw(text_);
+
+            std::cout << "Button::draw(unsigned int*, int, int)\n";
         }
 };
 

@@ -17,19 +17,19 @@ class ColorButton: public AbstractButton {
             {}
         ~ColorButton() {}
 
-        void onMouseMove(unsigned x, unsigned y) override {
-            scrollBarButton_.onMouseMove(x, y);
+        void on_mouse_press(Pair<int> point) override {
+            scrollBarButton_.on_mouse_press(point);
         }
 
-        void onMouseClick(unsigned x, unsigned y) override {
-            scrollBarButton_.onMouseClick(x, y);
+        void on_mouse_release(Pair<int> point) override {
+            scrollBarButton_.on_mouse_release(point);
         }
 
-        void onMouseReleased(unsigned x, unsigned y) override {
-            scrollBarButton_.onMouseReleased(x, y);
+        void on_mouse_move(Pair<int> point) override {
+            scrollBarButton_.on_mouse_move(point);
         }
 
-        void draw(sf::RenderWindow& window) override;
+        void draw(unsigned int* screen, int width, int height) override;
 };
 
 #endif // COLOR_BUTTON_HPP_

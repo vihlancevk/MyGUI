@@ -29,45 +29,45 @@ class PainterManager {
             {}
         ~PainterManager() {}
 
-        void onMouseMove(unsigned x, unsigned y) {
-            colorButtonManager_.onMouseMove(x, y);
-            sizeButtonManager_.onMouseMove(x, y);
-            canvasWindow_.onMouseMove(x, y);
-        }
-
-        void onMouseClick(unsigned x, unsigned y) {
-            colorButtonManager_.onMouseClick(x, y);
-            sizeButtonManager_.onMouseClick(x, y);
-            toolButtonManager_.onMouseClick(x, y);
-            curvesFilterWindow_.onMouseClick(x, y);
+        void on_mouse_press(Pair<int> point) {
+            colorButtonManager_.on_mouse_press(point);
+            sizeButtonManager_.on_mouse_press(point);
+            toolButtonManager_.on_mouse_press(point);
+            curvesFilterWindow_.on_mouse_press(point);
             canvasWindow_.activeTool_ = toolButtonManager_.activeTool_;
-            canvasWindow_.onMouseClick(x, y);
+            canvasWindow_.on_mouse_press(point);
         }
 
-        void onMouseReleased(unsigned x, unsigned y) {
-            colorButtonManager_.onMouseReleased(x, y);
-            sizeButtonManager_.onMouseReleased(x, y);
-            toolButtonManager_.onMouseReleased(x, y);
+        void on_mouse_release(Pair<int> point) {
+            colorButtonManager_.on_mouse_release(point);
+            sizeButtonManager_.on_mouse_release(point);
+            toolButtonManager_.on_mouse_release(point);
 
             toolManager_.activeColor_ = colorButtonManager_.activeColor_;
             toolManager_.activeSize_ = sizeButtonManager_.activeSize_;
             toolManager_.activeTool_ = toolButtonManager_.activeTool_;
             toolManager_.setParametersOfActiveTool();
 
-            canvasWindow_.onMouseReleased(x, y);
+            canvasWindow_.on_mouse_release(point);
         }
 
-        void onKeyboard(int code) {
-            curvesFilterWindow_.onKeyboard(code);
+        void on_mouse_move(Pair<int> point) {
+            colorButtonManager_.on_mouse_move(point);
+            sizeButtonManager_.on_mouse_move(point);
+            canvasWindow_.on_mouse_move(point);
         }
 
-        void draw(sf::RenderWindow& window) {
-            toolManager_.draw(window);
-            colorButtonManager_.draw(window);
-            sizeButtonManager_.draw(window);
-            toolButtonManager_.draw(window);
-            canvasWindow_.draw(window);
-            curvesFilterWindow_.draw(window);
+        void on_key_press(int key) {
+            curvesFilterWindow_.on_key_press(key);
+        }
+
+        void draw(unsigned int* screen, int width, int height) {
+            toolManager_.draw(screen, width, height);
+            colorButtonManager_.draw(screen, width, height);
+            sizeButtonManager_.draw(screen, width, height);
+            toolButtonManager_.draw(screen, width, height);
+            canvasWindow_.draw(screen, width, height);
+            curvesFilterWindow_.draw(screen, width, height);
         }
 };
 

@@ -14,22 +14,22 @@ class SizeButtonManager {
             {}
         ~SizeButtonManager() {}
 
-        void onMouseMove(unsigned x, unsigned y) {
-            sizeButtons_.onMouseMove(x, y);
+        void on_mouse_press(Pair<int> point) {
+            sizeButtons_.on_mouse_press(point);
         }
 
-        void onMouseClick(unsigned x, unsigned y) {
-            sizeButtons_.onMouseClick(x, y);
-        }
-
-        void onMouseReleased(unsigned x, unsigned y) {
-            sizeButtons_.onMouseReleased(x, y);
+        void on_mouse_release(Pair<int> point) {
+            sizeButtons_.on_mouse_release(point);
 
             activeSize_ = sizeButtons_.size_;
         }
 
-        void draw(sf::RenderWindow& window) {
-                sizeButtons_.draw(window);
+        void on_mouse_move(Pair<int> point) {
+            sizeButtons_.on_mouse_move(point);
+        }
+
+        void draw(unsigned int* screen, int width, int height) {
+                sizeButtons_.draw(screen, width, height);
         }
 };
 

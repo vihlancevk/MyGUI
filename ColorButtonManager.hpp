@@ -48,23 +48,17 @@ class ColorButtonManager {
             }
         }
 
-        void onMouseMove(unsigned x, unsigned y) {
+        void on_mouse_press(Pair<int> point) {
             for (size_t i = 0; i < curSize_; i++) {
-                colorButtons_[i].onMouseMove(x, y);
+                colorButtons_[i].on_mouse_press(point);
             }
         }
 
-        void onMouseClick(unsigned x, unsigned y) {
-            for (size_t i = 0; i < curSize_; i++) {
-                colorButtons_[i].onMouseClick(x, y);
-            }
-        }
-
-        void onMouseReleased(unsigned x, unsigned y) {
+        void on_mouse_release(Pair<int> point) {
             unsigned color[size_] = {};
 
             for (size_t i = 0; i < curSize_; i++) {
-                colorButtons_[i].onMouseReleased(x, y);
+                colorButtons_[i].on_mouse_release(point);
                 color[i] = colorButtons_[i].scrollBarButton_.calculateValue();
             }
             
@@ -73,9 +67,15 @@ class ColorButtonManager {
                                      (sf::Uint8) color[2]);
         }
 
-        void draw(sf::RenderWindow& window) {
+        void on_mouse_move(Pair<int> point) {
             for (size_t i = 0; i < curSize_; i++) {
-                colorButtons_[i].draw(window);
+                colorButtons_[i].on_mouse_move(point);
+            }
+        }
+
+        void draw(unsigned int* screen, int width, int height) {
+            for (size_t i = 0; i < curSize_; i++) {
+                colorButtons_[i].draw(screen, width, height);
             }
         }
 };

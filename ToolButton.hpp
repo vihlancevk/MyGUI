@@ -36,34 +36,36 @@ class ToolButton: public AbstractButton {
             }
         }
 
-        void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape frame(sf::Vector2f((float) weight_,
-                                                  (float) hight_));
-            frame.setPosition(sf::Vector2f((float) (x_),
-                                           (float) (y_)));
-            frame.setFillColor(sf::Color::White);
-            frame.setOutlineThickness(outlineThickness_);
-            frame.setOutlineColor(sf::Color::Black);
+        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
+            // sf::RectangleShape frame(sf::Vector2f((float) weight_,
+            //                                       (float) hight_));
+            // frame.setPosition(sf::Vector2f((float) (x_),
+            //                                (float) (y_)));
+            // frame.setFillColor(sf::Color::White);
+            // frame.setOutlineThickness(outlineThickness_);
+            // frame.setOutlineColor(sf::Color::Black);
 
-            sf::Texture texture;
-            texture.loadFromImage(image_, sf::IntRect(0, 0, (int) weight_, (int) hight_));
+            // sf::Texture texture;
+            // texture.loadFromImage(image_, sf::IntRect(0, 0, (int) weight_, (int) hight_));
 
-            sf::Sprite sprite;
-            sprite.setTexture(texture);
-            sprite.setPosition((float) x_, (float) y_);
+            // sf::Sprite sprite;
+            // sprite.setTexture(texture);
+            // sprite.setPosition((float) x_, (float) y_);
             
-            window.draw(frame);
-            window.draw(sprite);
+            // window.draw(frame);
+            // window.draw(sprite);
 
-            if (isActive_) {
-                const size_t pointRadius = 5;
+            // if (isActive_) {
+            //     const size_t pointRadius = 5;
                 
-                sf::CircleShape point(pointRadius);
-                point.setPosition(sf::Vector2f((float) x_ + pointRadius, (float) y_ + pointRadius));
-                point.setFillColor(sf::Color::Black);
+            //     sf::CircleShape point(pointRadius);
+            //     point.setPosition(sf::Vector2f((float) x_ + pointRadius, (float) y_ + pointRadius));
+            //     point.setFillColor(sf::Color::Black);
             
-                window.draw(point);
-            }
+            //     window.draw(point);
+            // }
+
+            std::cout << "ToolButton::draw(unsigned int*, int, int)\n";
         }
 };
 

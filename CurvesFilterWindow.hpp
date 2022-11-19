@@ -21,17 +21,14 @@ class CurvesFilterWindow: public Widget {
             {}
         ~CurvesFilterWindow() {}
 
-        void move() override {}
-
-        void onMouseMove(unsigned, unsigned) override {}
-
-        void onMouseClick(unsigned x, unsigned y) override {
-            okButton_.onMouseClick(x, y);
-            cancelButton_.onMouseClick(x, y);
+        void on_mouse_press(Pair<int> point) override {
+            okButton_.on_mouse_press(point);
+            cancelButton_.on_mouse_press(point);
 
             if (okButton_.isActive_) {
                 isActive_ = false;
                 std::cout << "Change save!\n";
+                return;
             }
             if (cancelButton_.isActive_) {
                 isActive_ = false;
@@ -39,35 +36,41 @@ class CurvesFilterWindow: public Widget {
             }
         }
         
-        void onMouseReleased(unsigned, unsigned) override {}
+        void on_mouse_release(Pair<int> /*point*/) override {
+            std::cout << "CurvesFilterWindow::on_mouse_release(Pair<int>)\n";
+        }
         
-        void onKeyboard(int code) override {
+        void on_mouse_move(Pair<int> /*point*/) override {
+            std::cout << "CurvesFilterWindow::on_mouse_move(Pair<int>)\n";
+        }
+
+        void on_key_press(int key) override {
             if (prevCode_ == sf::Keyboard::LControl) {
-                if (code == sf::Keyboard::N) {
+                if (key == sf::Keyboard::N) {
                     isActive_ = true;
                 }
             }
 
-            prevCode_ = code;
+            prevCode_ = key;
         }
 
-        void draw(sf::RenderWindow& window) override {
-            if (isActive_) {
-                sf::RectangleShape mainWindow(sf::Vector2f((float) (weight_),
-                                                           (float) (hight_)));
-                mainWindow.setPosition(sf::Vector2f((float) (x_),
-                                                    (float) (y_)));
-                mainWindow.setFillColor(sf::Color::White);
-                mainWindow.setOutlineThickness(outlineThickness_);
-                mainWindow.setOutlineColor(sf::Color::Black);
-                window.draw(mainWindow);
+        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
+            // if (isActive_) {
+            //     sf::RectangleShape mainWindow(sf::Vector2f((float) (weight_),
+            //                                                (float) (hight_)));
+            //     mainWindow.setPosition(sf::Vector2f((float) (x_),
+            //                                         (float) (y_)));
+            //     mainWindow.setFillColor(sf::Color::White);
+            //     mainWindow.setOutlineThickness(outlineThickness_);
+            //     mainWindow.setOutlineColor(sf::Color::Black);
+            //     window.draw(mainWindow);
 
-                okButton_.draw(window);
-                cancelButton_.draw(window);
-            }
+            //     okButton_.draw(window);
+            //     cancelButton_.draw(window);
+            // }
+
+            std::cout << "CurvesFilterWindow::draw(unsigned int*, int, int)\n";
         }
-
-        void close() override {}
 };
 
 #endif // CURVES_FILTER_WINDOW_HPP_

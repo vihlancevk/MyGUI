@@ -16,31 +16,32 @@ class SizeButton: public AbstractButton {
             {}
         ~SizeButton() {}
 
-        void onMouseMove(unsigned x, unsigned y) override {
-            scrollBarButton_.onMouseMove(x, y);
+        void on_mouse_press(Pair<int> point) override {
+            scrollBarButton_.on_mouse_press(point);
         }
 
-        void onMouseClick(unsigned x, unsigned y) override {
-            scrollBarButton_.onMouseClick(x, y);
+        void on_mouse_release(Pair<int> point) override {
+            scrollBarButton_.on_mouse_release(point);
         }
 
-        void onMouseReleased(unsigned x, unsigned y) override {
-            scrollBarButton_.onMouseReleased(x, y);
-
-            size_ = scrollBarButton_.calculateValue();
+        void on_mouse_move(Pair<int> point) override {
+            scrollBarButton_.on_mouse_move(point);
         }
 
-        void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape sizeButton(sf::Vector2f((float) (weight_),
-                                                       (float) (hight_)));
-            sizeButton.setPosition(sf::Vector2f((float) (x_),
-                                                (float) (y_)));
-            sizeButton.setFillColor(sf::Color::White);
-            sizeButton.setOutlineThickness(outlineThickness_);
-            sizeButton.setOutlineColor(sf::Color::Black);
+        void draw(unsigned int* screen, int width, int height) override {
+            // sf::RectangleShape sizeButton(sf::Vector2f((float) (weight_),
+            //                                            (float) (hight_)));
+            // sizeButton.setPosition(sf::Vector2f((float) (x_),
+            //                                     (float) (y_)));
+            // sizeButton.setFillColor(sf::Color::White);
+            // sizeButton.setOutlineThickness(outlineThickness_);
+            // sizeButton.setOutlineColor(sf::Color::Black);
 
-            window.draw(sizeButton);
-            scrollBarButton_.draw(window);
+            // window.draw(sizeButton);
+
+            std::cout << "SizeButton::draw(unsigned int*, int, int)\n";
+
+            scrollBarButton_.draw(screen, width, height);
         }
 };
 

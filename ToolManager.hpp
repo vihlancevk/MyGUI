@@ -46,9 +46,9 @@ class ToolManager {
             }
         }
 
-        void draw(sf::RenderWindow& window) {
+        void draw(unsigned int* screen, int width, int height) {
             toolPalette_.setTool(activeTool_);
-            toolPalette_.draw(window);
+            toolPalette_.draw(screen, width, height);
         }
 };
 

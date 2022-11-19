@@ -35,14 +35,14 @@ class ToolButtonManager {
             }
         }
 
-        void onMouseClick(unsigned x, unsigned y) {
+        void on_mouse_press(Pair<int> point) {
             bool isActivated = false;
             
             for (size_t i = 0; i < curSize_; i++) {
                 if (!toolButtons_[i]->isActive_)
                     isActivated = true;
                 
-                toolButtons_[i]->onMouseClick(x, y);
+                toolButtons_[i]->on_mouse_press(point);
 
                 if (toolButtons_[i]->isActive_ && isActivated) {
                     activeTool_ = *toolButtons_[i]->tool_;
@@ -61,11 +61,13 @@ class ToolButtonManager {
             }
         }
 
-        void onMouseReleased(unsigned, unsigned) {}
+        void on_mouse_release(Pair<int> /*point*/) {
+            std::cout << "ToolButtonManager::on_mouse_release(Pair<int>)\n";
+        }
 
-        void draw(sf::RenderWindow& window) {
+        void draw(unsigned int* screen, int width, int height) {
             for (size_t i = 0; i < curSize_; i++) {
-                toolButtons_[i]->draw(window);
+                toolButtons_[i]->draw(screen, width, height);
             }
         }
 };

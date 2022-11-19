@@ -28,37 +28,46 @@ class CanvasWindow: public Widget {
         CanvasWindow(const CanvasWindow& canvasWindow) = delete;
         CanvasWindow& operator = (const CanvasWindow& canvasWindow) = delete;
 
-        void onMouseMove(unsigned x, unsigned y) override {
-            if (!isPointInWidget(x, y)) {
+        void on_mouse_press(Pair<int> point) override {
+            contains(point);
+            if (isContains_) {
+                isActive_ = true;
+                isContains_ = false;
+            }       
+        }
+
+        void on_mouse_release(Pair<int> point) override {
+            contains(point);
+            if(isContains_) {
+                isActive_ = false;
+                isContains_ = false;
+            }
+        }
+
+        void on_mouse_move(Pair<int> point) override {
+            contains(point);
+            if (!isContains_) {
                 isActive_ = false;
             }
 
             if (isActive_ && activeTool_) {
-                activeTool_->actionWithCanvas(pixels_, x_, y_, weight_, hight_, x, y);
+                activeTool_->actionWithCanvas(pixels_, x_, y_, weight_, hight_, (unsigned) point.x, (unsigned) point.y);
             }
         }
 
-        void onMouseClick(unsigned x, unsigned y) override {
-            if (isPointInWidget(x, y))
-                isActive_ = true;       
-        }
+        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
+            // sf::RectangleShape frame(sf::Vector2f((float) weight_,
+            //                                       (float) hight_));
+            // frame.setPosition(sf::Vector2f((float) (x_),
+            //                                (float) (y_)));
+            // frame.setFillColor(sf::Color::White);
+            // frame.setOutlineThickness(outlineThickness_);
+            // frame.setOutlineColor(sf::Color::Black);
 
-        void onMouseReleased(unsigned x, unsigned y) override {
-            if(isPointInWidget(x, y))
-                isActive_ = false;
-        }
+            // window.draw(frame);
+            // window.draw(pixels_);
 
-        void draw(sf::RenderWindow& window) override {
-            sf::RectangleShape frame(sf::Vector2f((float) weight_,
-                                                  (float) hight_));
-            frame.setPosition(sf::Vector2f((float) (x_),
-                                           (float) (y_)));
-            frame.setFillColor(sf::Color::White);
-            frame.setOutlineThickness(outlineThickness_);
-            frame.setOutlineColor(sf::Color::Black);
-
-            window.draw(frame);
-            window.draw(pixels_);
+            std::cout << "CanvasWindow::draw(unsigned int*, int, int)\n";
         }
 };
 

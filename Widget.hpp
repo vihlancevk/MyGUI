@@ -3,47 +3,78 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "plugin.h"
 
-class Widget {
+class Widget: public IWidget {
     public:
         unsigned x_, y_;
 
         unsigned weight_, hight_;
 
+        bool isContains_ = false;
+
         float outlineThickness_ = 3;
     public:
         Widget(unsigned x, unsigned y, unsigned weight, unsigned hight):
+            IWidget(),
             x_(x),
             y_(y),
             weight_(weight),
             hight_(hight)
             {}
+        ~Widget() {};
 
-        virtual bool isPointInWidget(unsigned x, unsigned y) {
-            if (x_ <= x && x <= (x_ + weight_)) {
-                if (y_ <= y && y <= (y_ + hight_)) {
-                    return true;
+        void set_pos(Pair<int> /*point*/) override {
+            std::cout << "Widget::set_pos(Pair<int>)\n";
+        }
+        
+        Pair<int> get_pos() override {
+            std::cout << "Widget::get_pos()\n";
+
+            return Pair<int>{(int) x_, (int) y_};
+        }
+
+        Pair<int> get_size() override {
+            std::cout << "Widget::get_size()\n";
+
+            return Pair<int>{(int) weight_, (int) hight_};
+        }
+
+        void contains(Pair<int> point) override {
+            std::cout << "Widget::contains(Pair<int>)\n";
+            
+            if (x_ <= (unsigned) point.x && (unsigned) point.x <= (x_ + weight_)) {
+                if (y_ <= (unsigned) point.y && (unsigned) point.y <= (y_ + hight_)) {
+                    isContains_ = true;
                 }
             }
 
-            return false;
+            isContains_ = false;
+        }        
+
+        void on_mouse_press(Pair<int> /*point*/) override {
+            std::cout << "Widget::on_mouse_press(Pair<int>)\n";
         }
 
-        virtual void move() {}
+        void on_mouse_release(Pair<int> /*point*/) override {
+            std::cout << "Widget::on_mouse_release(Pair<int>)\n";
+        }
 
-        virtual void onMouseMove(unsigned, unsigned) {}
-
-        virtual void onMouseClick(unsigned, unsigned) {}
+        void on_mouse_move(Pair<int> /*point*/) override {
+            std::cout << "Widget::on_mouse_move(Pair<int>)\n";
+        }
         
-        virtual void onMouseReleased(unsigned, unsigned) {}
-        
-        virtual void onKeyboard(int) {}
+        void on_key_press(int /*key*/) override {
+            std::cout << "Widget::on_key_press(int)\n";
+        }
 
-        virtual void draw(sf::RenderWindow&) {}
+        void on_key_release(int /*key*/) override {
+            std::cout << "Widget::on_key_release(int)\n";
+        }
 
-        virtual void close() {}
-
-        virtual ~Widget() = default;
+        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
+            std::cout << "Widget::draw(unsigned int*, int, int)\n";
+        }
 };
 
 #endif // WIDGET_HPP_
