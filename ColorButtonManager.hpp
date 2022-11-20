@@ -49,7 +49,6 @@ class ColorButtonManager {
         }
 
         void on_mouse_press(Pair<int> point) {
-            std::cout << "OK\n";
             for (size_t i = 0; i < curSize_; i++) {
                 colorButtons_[i].on_mouse_press(point);
             }

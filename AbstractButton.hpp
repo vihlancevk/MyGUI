@@ -19,7 +19,6 @@ class AbstractButton: public Widget {
             if (isContains_) {
                 isActive_ = (isActive_) ? false : true;
                 isContains_ = false;
-                std::cout << isActive_ << std::endl;
             }
         }
 };
