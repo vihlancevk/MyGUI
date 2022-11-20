@@ -25,23 +25,29 @@ class ScrollBarButton: public AbstractButton {
         ~ScrollBarButton() {}
 
         void contains(Pair<int> point) override {
-            if (positionX_ <= (unsigned) point.x && (unsigned) point.x <= positionX_ + 2 * pointRadius_)
-                if (positionY_ <= (unsigned) point.y && (unsigned) point.y <= positionY_ + 2 * pointRadius_)
+            if (positionX_ <= (unsigned) point.x && (unsigned) point.x <= positionX_ + 2 * pointRadius_) {
+                if (positionY_ <= (unsigned) point.y && (unsigned) point.y <= positionY_ + 2 * pointRadius_) {
                     isContains_ = true;
+                    return;
+                }
+            }
 
             isContains_ = false;
         }
 
         void on_mouse_press(Pair<int> point) override {
             contains(point);
-            if (isContains_)
-                isActive_ = true;       
+            if (isContains_) {
+                isActive_ = true;
+                isContains_ = false;
+            }       
         }
 
         void on_mouse_release(Pair<int> point) override {
             contains(point);
             if (isContains_) {
                 isActive_ = false;
+                isContains_ = false;
             }
         }
 
@@ -77,6 +83,10 @@ class ScrollBarButton: public AbstractButton {
         void draw(unsigned int* screen, int width, int /*height*/) override {
             unsigned weight = 2;
 
+            // (*) --------------------
+            //     |        **        |
+            //     |        **        |
+            //     --------------------
             for (unsigned j = (y_ + hight_ / 2 - pointRadius_) - weight; j < (y_ + hight_ / 2 - pointRadius_); j++) {
                 for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
                     screen[j * 4 * (unsigned) width + i] =
@@ -85,33 +95,62 @@ class ScrollBarButton: public AbstractButton {
                     screen[j * 4 * (unsigned) width + i + 3] = 255;
                 }
             }
-
-            // sf::RectangleShape lineHorizontal(sf::Vector2f((float) weight_, weight));
-            // lineHorizontal.setFillColor(sf::Color::Black);
-
-            // lineHorizontal.setPosition(sf::Vector2f((float) x_, (float) (y_ + hight_ / 2 - pointRadius_) - weight));
-            // window.draw(lineHorizontal);
             
-            // lineHorizontal.setPosition(sf::Vector2f((float) x_, (float) (y_ + hight_ / 2 + pointRadius_)));
-            // window.draw(lineHorizontal);
+            //     --------------------
+            //     |        **        |
+            //     |        **        |
+            // (*) --------------------
+            for (unsigned j = (y_ + hight_ / 2 + pointRadius_); j < (y_ + hight_ / 2 + pointRadius_) + weight; j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            // (*)
+            //  --------------------
+            //  |        **        |
+            //  |        **        |
+            //  --------------------
+            for (unsigned j = (y_ + hight_ / 2 - pointRadius_); j < (y_ + hight_ / 2 + pointRadius_); j++) {
+                for (unsigned i = 4 * (x_); i < 4 * (x_ + weight) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
-            // sf::RectangleShape lineVerticalLeft(sf::Vector2f((float) (2 * pointRadius_), weight));
-            // lineVerticalLeft.setPosition(sf::Vector2f((float) x_ + weight, (float) (y_ + hight_ / 2 - pointRadius_)));
-            // lineVerticalLeft.setFillColor(sf::Color::Black);
-            // lineVerticalLeft.rotate(90);
-            // window.draw(lineVerticalLeft);
+            //                    (*)
+            //  --------------------
+            //  |        **        |
+            //  |        **        |
+            //  --------------------
+            for (unsigned j = (y_ + hight_ / 2 - pointRadius_); j < (y_ + hight_ / 2 + pointRadius_); j++) {
+                for (unsigned i = 4 * (x_ + weight_ - weight); i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
-            // sf::RectangleShape lineVerticalRight(sf::Vector2f((float) (2 * pointRadius_), weight));
-            // lineVerticalRight.setPosition(sf::Vector2f((float) (x_ + weight_), (float) (y_ + hight_ / 2 - pointRadius_)));
-            // lineVerticalRight.setFillColor(sf::Color::Black);
-            // lineVerticalRight.rotate(90);
-            // window.draw(lineVerticalRight);
-
-            // sf::CircleShape point((float) pointRadius_);
-            // point.setPosition(sf::Vector2f((float) positionX_, (float) positionY_));
-            // point.setFillColor(sf::Color::Black);
-
-            // window.draw(point);
+            
+            //                     
+            //  --------------------
+            //  |    (*) **        |
+            //  |        **        |
+            //  --------------------
+            for (unsigned j = positionY_; j < positionY_ + 2 * pointRadius_; j++) {
+                for (unsigned i = 4 * (positionX_); i < 4 * (positionX_ + 2 * pointRadius_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
         }
 
         unsigned calculateValue() {

@@ -36,14 +36,73 @@ class ToolButton: public AbstractButton {
             }
         }
 
-        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
-            // sf::RectangleShape frame(sf::Vector2f((float) weight_,
-            //                                       (float) hight_));
-            // frame.setPosition(sf::Vector2f((float) (x_),
-            //                                (float) (y_)));
-            // frame.setFillColor(sf::Color::White);
-            // frame.setOutlineThickness(outlineThickness_);
-            // frame.setOutlineColor(sf::Color::Black);
+        void draw(unsigned int* screen, int width, int /*height*/) override {
+            // (*) --------------------
+            //     |                  |
+            //     |                  |
+            //     |                  |
+            //     --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < y_; j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            //     --------------------
+            //     |                  |
+            //     |                  |
+            //     |                  |
+            // (*) --------------------
+            for (unsigned j = (y_ + hight_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            // (*)
+            //  --------------------
+            //  |                  |
+            //  |                  |
+            //  |                  |
+            //  --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * (x_ - outlineThickness_); i < 4 * (x_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+
+            //                    (*)
+            //  --------------------
+            //  |                  |
+            //  |                  |
+            //  |                  |
+            //  --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * (x_ + weight_); i < 4 * (x_ + weight_ + outlineThickness_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+
+            for (unsigned j = y_; j < (y_ + hight_); j++) {
+                for (unsigned i = 4 * (x_); i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] =
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
             // sf::Texture texture;
             // texture.loadFromImage(image_, sf::IntRect(0, 0, (int) weight_, (int) hight_));
@@ -52,20 +111,26 @@ class ToolButton: public AbstractButton {
             // sprite.setTexture(texture);
             // sprite.setPosition((float) x_, (float) y_);
             
-            // window.draw(frame);
             // window.draw(sprite);
 
-            // if (isActive_) {
-            //     const size_t pointRadius = 5;
+            if (isActive_) {
+                const unsigned pointRadius = 5;
                 
-            //     sf::CircleShape point(pointRadius);
-            //     point.setPosition(sf::Vector2f((float) x_ + pointRadius, (float) y_ + pointRadius));
-            //     point.setFillColor(sf::Color::Black);
-            
-            //     window.draw(point);
-            // }
-
-            std::cout << "ToolButton::draw(unsigned int*, int, int)\n";
+                //                     
+                //  --------------------
+                //  |(*)*              |
+                //  |                  |
+                //  |                  |
+                //  --------------------
+                for (unsigned j = y_ + pointRadius; j < (y_ + 2 * pointRadius); j++) {
+                    for (unsigned i = 4 * (x_ + pointRadius); i < 4 * (x_ + 2 * pointRadius) - (4 - 1); i += 4) {
+                        screen[j * 4 * (unsigned) width + i] =
+                        screen[j * 4 * (unsigned) width + i + 1] =
+                        screen[j * 4 * (unsigned) width + i + 2] = 0;
+                        screen[j * 4 * (unsigned) width + i + 3] = 255;
+                    }
+                }
+            }
         }
 };
 

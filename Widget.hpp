@@ -13,7 +13,7 @@ class Widget: public IWidget {
 
         bool isContains_ = false;
 
-        float outlineThickness_ = 3;
+        unsigned outlineThickness_ = 3;
     public:
         Widget(unsigned x, unsigned y, unsigned weight, unsigned hight):
             IWidget(),
@@ -40,12 +40,11 @@ class Widget: public IWidget {
             return Pair<int>{(int) weight_, (int) hight_};
         }
 
-        void contains(Pair<int> point) override {
-            std::cout << "Widget::contains(Pair<int>)\n";
-            
+        void contains(Pair<int> point) override {         
             if (x_ <= (unsigned) point.x && (unsigned) point.x <= (x_ + weight_)) {
                 if (y_ <= (unsigned) point.y && (unsigned) point.y <= (y_ + hight_)) {
                     isContains_ = true;
+                    return;
                 }
             }
 

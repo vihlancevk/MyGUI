@@ -22,6 +22,8 @@ class SizeButton: public AbstractButton {
 
         void on_mouse_release(Pair<int> point) override {
             scrollBarButton_.on_mouse_release(point);
+
+            size_ = scrollBarButton_.calculateValue();
         }
 
         void on_mouse_move(Pair<int> point) override {
@@ -29,17 +31,72 @@ class SizeButton: public AbstractButton {
         }
 
         void draw(unsigned int* screen, int width, int height) override {
-            // sf::RectangleShape sizeButton(sf::Vector2f((float) (weight_),
-            //                                            (float) (hight_)));
-            // sizeButton.setPosition(sf::Vector2f((float) (x_),
-            //                                     (float) (y_)));
-            // sizeButton.setFillColor(sf::Color::White);
-            // sizeButton.setOutlineThickness(outlineThickness_);
-            // sizeButton.setOutlineColor(sf::Color::Black);
+            // (*) --------------------
+            //     |                  |
+            //     |                  |
+            //     |                  |
+            //     --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < y_; j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            //     --------------------
+            //     |                  |
+            //     |                  |
+            //     |                  |
+            // (*) --------------------
+            for (unsigned j = (y_ + hight_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            // (*)
+            //  --------------------
+            //  |                  |
+            //  |                  |
+            //  |                  |
+            //  --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * (x_ - outlineThickness_); i < 4 * (x_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
-            // window.draw(sizeButton);
+            //                    (*)
+            //  --------------------
+            //  |                  |
+            //  |                  |
+            //  |                  |
+            //  --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * (x_ + weight_); i < 4 * (x_ + weight_ + outlineThickness_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
-            std::cout << "SizeButton::draw(unsigned int*, int, int)\n";
+            for (unsigned j = y_; j < (y_ + hight_); j++) {
+                for (unsigned i = 4 * (x_); i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] =
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
             scrollBarButton_.draw(screen, width, height);
         }

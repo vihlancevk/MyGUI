@@ -55,19 +55,73 @@ class CanvasWindow: public Widget {
             }
         }
 
-        void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
-            // sf::RectangleShape frame(sf::Vector2f((float) weight_,
-            //                                       (float) hight_));
-            // frame.setPosition(sf::Vector2f((float) (x_),
-            //                                (float) (y_)));
-            // frame.setFillColor(sf::Color::White);
-            // frame.setOutlineThickness(outlineThickness_);
-            // frame.setOutlineColor(sf::Color::Black);
+        void draw(unsigned int* screen, int width, int /*height*/) override {
+            // (*) --------------------
+            //     |                  |
+            //     |                  |
+            //     |                  |
+            //     --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < y_; j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            //     --------------------
+            //     |                  |
+            //     |                  |
+            //     |                  |
+            // (*) --------------------
+            for (unsigned j = (y_ + hight_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * x_; i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+            
+            // (*)
+            //  --------------------
+            //  |                  |
+            //  |                  |
+            //  |                  |
+            //  --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * (x_ - outlineThickness_); i < 4 * (x_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
-            // window.draw(frame);
-            // window.draw(pixels_);
+            //                    (*)
+            //  --------------------
+            //  |                  |
+            //  |                  |
+            //  |                  |
+            //  --------------------
+            for (unsigned j = (y_ - outlineThickness_); j < (y_ + hight_ + outlineThickness_); j++) {
+                for (unsigned i = 4 * (x_ + weight_); i < 4 * (x_ + weight_ + outlineThickness_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] = 0;
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
 
-            std::cout << "CanvasWindow::draw(unsigned int*, int, int)\n";
+            for (unsigned j = y_, j1 = 0; j < (y_ + hight_); j++, j1++) {
+                for (unsigned i = 4 * (x_), i1 = 0; i < 4 * (x_ + weight_) - (4 - 1); i += 4, i1++) {
+                    screen[j * 4 * (unsigned) width + i] = pixels_[j1 * weight_ + i1].color.r;
+                    screen[j * 4 * (unsigned) width + i + 1] = pixels_[j1 * weight_ + i1].color.g;
+                    screen[j * 4 * (unsigned) width + i + 2] = pixels_[j1 * weight_ + i1].color.b;
+                    screen[j * 4 * (unsigned) width + i + 3] = pixels_[j1 * weight_ + i1].color.a;
+                }
+            }
         }
 };
 

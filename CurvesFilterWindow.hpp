@@ -55,7 +55,7 @@ class CurvesFilterWindow: public Widget {
         }
 
         void draw(unsigned int* /*screen*/, int /*width*/, int /*height*/) override {
-            // if (isActive_) {
+            if (isActive_) {
             //     sf::RectangleShape mainWindow(sf::Vector2f((float) (weight_),
             //                                                (float) (hight_)));
             //     mainWindow.setPosition(sf::Vector2f((float) (x_),
@@ -67,9 +67,9 @@ class CurvesFilterWindow: public Widget {
 
             //     okButton_.draw(window);
             //     cancelButton_.draw(window);
-            // }
 
-            std::cout << "CurvesFilterWindow::draw(unsigned int*, int, int)\n";
+                std::cout << "CurvesFilterWindow::draw(unsigned int*, int, int)\n";
+            }
         }
 };
 
