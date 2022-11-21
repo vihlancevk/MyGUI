@@ -1,39 +1,88 @@
 #ifndef TOOL_BUTTON_HPP_
 #define TOOL_BUTTON_HPP_
 
-#include "AbstractButton.hpp"
+#include <iostream>
 #include "plugin.h"
 
-class ToolButton: public AbstractButton {
+class ToolButton: public IPushButton {
     public:
+        unsigned x_, y_;
+        unsigned weight_, hight_;
+
         sf::Image image_;
 
-        size_t size_ = 1;
-        size_t curSize_ = 0;
-        ITool** tool_;
+        bool isContains_ = false;
+
+        unsigned outlineThickness_ = 3;
     public:
         ToolButton(unsigned x, unsigned y, unsigned weight, unsigned hight, const char* image):
-            AbstractButton(x, y, weight, hight),
-            image_(),
-            tool_((ITool**) new char[sizeof(ITool*)])
+            IPushButton(),
+            x_(x),
+            y_(y),
+            weight_(weight),
+            hight_(hight),
+            image_()
             {
                 image_.loadFromFile(image);
             }
-        ~ToolButton() {
-            delete [] (char*) tool_;
+
+        ~ToolButton() {}
+
+        void set_signal(void (*signal)(IPushButton*)) override {}
+
+        void set_pos(Pair<int> /*point*/) override {
+            std::cout << "ToolButton::set_pos(Pair<int>)\n";
+        }
+        
+        Pair<int> get_pos() override {
+            std::cout << "ToolButton::get_pos()\n";
+
+            return Pair<int>{(int) x_, (int) y_};
         }
 
-        ToolButton(const ToolButton& toolButton) = delete;
-        ToolButton& operator = (const ToolButton& toolButton) = delete;
+        Pair<int> get_size() override {
+            std::cout << "ToolButton::get_size()\n";
 
-        size_t setTool(ITool* tool) {
-            if (curSize_ >= size_) {
-                std::cout << "Tool in ToolButton already set!\n";
-                return 0;
-            } else {
-                tool_[curSize_++] = tool;
-                return 1;
+            return Pair<int>{(int) weight_, (int) hight_};
+        }
+
+        void contains(Pair<int> point) override {         
+            if (x_ <= (unsigned) point.x && (unsigned) point.x <= (x_ + weight_)) {
+                if (y_ <= (unsigned) point.y && (unsigned) point.y <= (y_ + hight_)) {
+                    isContains_ = true;
+                    return;
+                }
             }
+
+            isContains_ = false;
+        }        
+
+        void on_mouse_press(Pair<int> point) override {
+            contains(point);
+            if (isContains_) {
+                if (this->get_state()) {
+                    this->set_state(false);
+                } else {
+                    this->set_state(true);
+                }
+                isContains_ = false;
+            }
+        }
+
+        void on_mouse_release(Pair<int> /*point*/) override {
+            std::cout << "ToolButton::on_mouse_release(Pair<int>)\n";
+        }
+
+        void on_mouse_move(Pair<int> /*point*/) override {
+            std::cout << "ToolButton::on_mouse_move(Pair<int>)\n";
+        }
+        
+        void on_key_press(int /*key*/) override {
+            std::cout << "ToolButton::on_key_press(int)\n";
+        }
+
+        void on_key_release(int /*key*/) override {
+            std::cout << "ToolButton::on_key_release(int)\n";
         }
 
         void draw(unsigned int* screen, int width, int /*height*/) override {
@@ -113,7 +162,7 @@ class ToolButton: public AbstractButton {
             
             // window.draw(sprite);
 
-            if (isActive_) {
+            if (this->get_state()) {
                 const unsigned pointRadius = 5;
                 
                 //                     

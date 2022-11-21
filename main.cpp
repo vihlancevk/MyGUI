@@ -1,18 +1,19 @@
 #include <SFML/Graphics.hpp>
 
-#include "Brush.hpp"
-#include "Eraser.hpp"
-#include "ToolPalette.hpp"
-#include "ToolManager.hpp"
 #include "ScrollBarButton.hpp"
 #include "ColorButton.hpp"
 #include "SizeButton.hpp"
 #include "ColorButtonManager.hpp"
 #include "SizeButtonManager.hpp"
-#include "ToolButtonManager.hpp"
+#include "Brush.hpp"
+#include "Eraser.hpp"
+#include "ToolPalette.hpp"
+#include "ToolButton.hpp"
+#include "PluginBrush.hpp"
+// #include "PluginEraser.hpp"
+#include "PainterManager.hpp"
 #include "CurvesFilterWindow.hpp"
 #include "CanvasWindow.hpp"
-#include "PainterManager.hpp"
 
 sf::VertexArray& convertUnsignedIntArray2VertexArray(unsigned int* pixels, sf::VertexArray& vertexArrayPixels);
 
@@ -46,12 +47,6 @@ int main() {
 
     sf::VertexArray vertexArrayPixels(sf::Points, SCREEN_WEIGHT * SCREEN_HIGHT);
 
-    ToolPalette toolPalette(275, 130, 400, 30);
-
-    ToolManager toolManager(2, toolPalette);
-    toolManager.addTool(new Brush());
-    toolManager.addTool(new Eraser());
-
     const size_t nColorButtons = 3;
     ColorButton colorButtons[nColorButtons] = 
     {
@@ -68,21 +63,23 @@ int main() {
     SizeButton sizeButton(1600, 805, 160, 90);
     SizeButtonManager sizeButtonManager(sizeButton);
 
-    ToolButton brushButton(100, 225, 135, 90, "images/brush.png");
-    brushButton.setTool(toolManager.tools_[0]);
-    ToolButton eraserButton(100, 350, 135, 90, "images/eraser.png");
-    eraserButton.setTool(toolManager.tools_[1]);
-
-    ToolButtonManager toolButtonManager(2);
-    toolButtonManager.addTool(&brushButton);
-    toolButtonManager.addTool(&eraserButton);
+    size_t nPlugins = 1;
+    PluginManager pluginManager(nPlugins);
+    pluginManager.addPlugin(new PluginBrush (new Brush(),
+                                             new ToolPalette(275, 130, 400, 30),
+                                             new ToolButton(100, 225, 135, 90, "images/brush.png")));
+    // TODO: class PlaginEraser {}
+    // pluginManager.addPlugin(new PluginEraser (new Eraser(),
+    //                                           new ToolPalette(275, 130, 400, 30),
+    //                                           new ToolButton(100, 350, 135, 90, "images/eraser.png")));
 
     CurvesFilterWindow curvesFilterWindow(400, 400, 800, 450);
 
     CanvasWindow canvasWindow(275, 175, 1280, 720);
 
-    PainterManager painterManager(toolManager, colorButtonManager, sizeButtonManager,
-                                  toolButtonManager, curvesFilterWindow, canvasWindow);
+    PainterManager painterManager(colorButtonManager, sizeButtonManager,
+                                  pluginManager, curvesFilterWindow,
+                                  canvasWindow);
 
 	sf::Event event;
 
@@ -117,8 +114,12 @@ int main() {
 		window.clear();
 	}
 
-    delete toolManager.tools_[0];
-    delete toolManager.tools_[1];
+    for (size_t i = 0; i < nPlugins; i++) {
+        delete pluginManager.plugins_[i]->get_tool_button();
+        delete pluginManager.plugins_[i]->get_props();
+        delete pluginManager.plugins_[i]->get_tool();
+        delete pluginManager.plugins_[i];
+    }
 
     delete [] pixels;
 

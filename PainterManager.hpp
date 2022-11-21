@@ -1,29 +1,26 @@
 #ifndef WIDGET_MANAGER_HPP_
 #define WIDGET_MANAGER_HPP_
 
-#include "ToolManager.hpp"
 #include "ColorButtonManager.hpp"
 #include "SizeButtonManager.hpp"
-#include "ToolButtonManager.hpp"
+#include "PluginManager.hpp"
 #include "CurvesFilterWindow.hpp"
 #include "CanvasWindow.hpp"
 
 class PainterManager {
     public:
-        ToolManager& toolManager_;
         ColorButtonManager& colorButtonManager_;
         SizeButtonManager& sizeButtonManager_;
-        ToolButtonManager& toolButtonManager_;
+        PluginManager& pluginManager_;
         CurvesFilterWindow& curvesFilterWindow_;
         CanvasWindow& canvasWindow_;
     public:
-        PainterManager(ToolManager& toolManager, ColorButtonManager& colorButtonManager,
-                       SizeButtonManager& sizeButtonManager, ToolButtonManager& toolButtonManager,
-                       CurvesFilterWindow& curvesFilterWindow, CanvasWindow& canvasWindow):
-            toolManager_(toolManager),
+        PainterManager(ColorButtonManager& colorButtonManager, SizeButtonManager& sizeButtonManager,
+                       PluginManager& pluginManager, CurvesFilterWindow& curvesFilterWindow,
+                       CanvasWindow& canvasWindow):
             colorButtonManager_(colorButtonManager),
             sizeButtonManager_(sizeButtonManager),
-            toolButtonManager_(toolButtonManager),
+            pluginManager_(pluginManager),
             curvesFilterWindow_(curvesFilterWindow),
             canvasWindow_(canvasWindow)
             {}
@@ -31,29 +28,34 @@ class PainterManager {
 
         void on_mouse_press(Pair<int> point) {
             colorButtonManager_.on_mouse_press(point);
+
             sizeButtonManager_.on_mouse_press(point);
-            toolButtonManager_.on_mouse_press(point);
+            
+            pluginManager_.on_mouse_press(point);
+            
             curvesFilterWindow_.on_mouse_press(point);
-            canvasWindow_.activeTool_ = toolButtonManager_.activeTool_;
+
+            canvasWindow_.activeTool_ = pluginManager_.activeTool_;
             canvasWindow_.on_mouse_press(point);
         }
 
         void on_mouse_release(Pair<int> point) {
             colorButtonManager_.on_mouse_release(point);
-            sizeButtonManager_.on_mouse_release(point);
-            toolButtonManager_.on_mouse_release(point);
 
-            toolManager_.activeColor_ = colorButtonManager_.activeColor_;
-            toolManager_.activeSize_ = sizeButtonManager_.activeSize_;
-            toolManager_.activeTool_ = toolButtonManager_.activeTool_;
-            toolManager_.setParametersOfActiveTool();
+            sizeButtonManager_.on_mouse_release(point);
+
+            pluginManager_.activeColor_ = colorButtonManager_.activeColor_;
+            pluginManager_.activeSize_ = sizeButtonManager_.activeSize_;
+            pluginManager_.on_mouse_release(point);
 
             canvasWindow_.on_mouse_release(point);
         }
 
         void on_mouse_move(Pair<int> point) {
             colorButtonManager_.on_mouse_move(point);
+            
             sizeButtonManager_.on_mouse_move(point);
+            
             canvasWindow_.on_mouse_move(point);
         }
 
@@ -62,12 +64,15 @@ class PainterManager {
         }
 
         void draw(unsigned int* screen, int width, int height) {
-            toolManager_.draw(screen, width, height);
             colorButtonManager_.draw(screen, width, height);
+
             sizeButtonManager_.draw(screen, width, height);
-            toolButtonManager_.draw(screen, width, height);
-            canvasWindow_.draw(screen, width, height);
+            
+            pluginManager_.draw(screen, width, height);
+            
             curvesFilterWindow_.draw(screen, width, height);
+            
+            canvasWindow_.draw(screen, width, height);
         }
 };
 
