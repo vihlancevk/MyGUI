@@ -9,8 +9,6 @@ class PluginManager {
         size_t curSize_;
         IPlugin** plugins_;
 
-        sf::Color activeColor_ = sf::Color::Black;
-        unsigned activeSize_ = 10;
         ITool* activeTool_ = nullptr;
      public:
         PluginManager(size_t size):
@@ -37,6 +35,10 @@ class PluginManager {
         }
 
         void on_mouse_press(Pair<int> point) {
+            for (size_t i = 0; i < curSize_; i++) {
+                plugins_[i]->get_props()->on_mouse_press(point);
+            }
+
             bool isActivated = false;
             
             for (size_t i = 0; i < curSize_; i++) {
@@ -62,8 +64,16 @@ class PluginManager {
             }
         }
 
-        void on_mouse_release(Pair<int> /*point*/) {
-            std::cout << "PluginManager::on_mouse_release(Pair<int>)\n";
+        void on_mouse_release(Pair<int> point) {
+            for (size_t i = 0; i < curSize_; i++) {
+                plugins_[i]->get_props()->on_mouse_release(point);
+            }
+        }
+
+        void on_mouse_move(Pair<int> point) {
+            for (size_t i = 0; i < curSize_; i++) {
+                plugins_[i]->get_props()->on_mouse_move(point);
+            }
         }
 
         void draw(unsigned int* screen, int width, int height) {

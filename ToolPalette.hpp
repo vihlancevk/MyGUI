@@ -15,9 +15,6 @@ class ToolPalette: public Widget {
             {}
         ~ToolPalette() {}
 
-        ToolPalette(const ToolPalette& toolPalette) = delete;
-        ToolPalette& operator = (const ToolPalette& toolPalette) = delete;
-
         void setSize(unsigned size) {
             size_ = size;
         }

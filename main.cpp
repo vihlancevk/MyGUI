@@ -1,13 +1,14 @@
 #include <SFML/Graphics.hpp>
 
+#include "Brush.hpp"
+#include "Eraser.hpp"
 #include "ScrollBarButton.hpp"
 #include "ColorButton.hpp"
 #include "SizeButton.hpp"
 #include "ColorButtonManager.hpp"
 #include "SizeButtonManager.hpp"
-#include "Brush.hpp"
-#include "Eraser.hpp"
 #include "ToolPalette.hpp"
+#include "Props.hpp"
 #include "ToolButton.hpp"
 #include "PluginBrush.hpp"
 // #include "PluginEraser.hpp"
@@ -63,10 +64,12 @@ int main() {
     SizeButton sizeButton(1600, 805, 160, 90);
     SizeButtonManager sizeButtonManager(sizeButton);
 
+    ToolPalette toolPalette(275, 130, 400, 30);
+
     size_t nPlugins = 1;
     PluginManager pluginManager(nPlugins);
     pluginManager.addPlugin(new PluginBrush (new Brush(),
-                                             new ToolPalette(275, 130, 400, 30),
+                                             new Props(&colorButtonManager, &sizeButtonManager, toolPalette),
                                              new ToolButton(100, 225, 135, 90, "images/brush.png")));
     // TODO: class PlaginEraser {}
     // pluginManager.addPlugin(new PluginEraser (new Eraser(),
@@ -77,9 +80,7 @@ int main() {
 
     CanvasWindow canvasWindow(275, 175, 1280, 720);
 
-    PainterManager painterManager(colorButtonManager, sizeButtonManager,
-                                  pluginManager, curvesFilterWindow,
-                                  canvasWindow);
+    PainterManager painterManager(pluginManager, curvesFilterWindow, canvasWindow);
 
 	sf::Event event;
 
