@@ -10,7 +10,7 @@ class ToolButtonManager {
         size_t curSize_;
         ToolButton** toolButtons_;
 
-        Tool* activeTool_ = nullptr;
+        ITool* activeTool_ = nullptr;
      public:
         ToolButtonManager(size_t size):
             size_(size),

@@ -2,28 +2,31 @@
 #define CANVAS_WINDOW_HPP_
 
 #include "Widget.hpp"
-#include "Tool.hpp"
+#include "plugin.h"
 
 class CanvasWindow: public Widget {
     public:
-        sf::VertexArray pixels_;
+        unsigned* pixels_;
         bool isActive_;
         
         const sf::Color canvasColor_ = sf::Color::White;
-        Tool* activeTool_ = nullptr;
+        ITool* activeTool_ = nullptr;
     public:
         CanvasWindow(unsigned x, unsigned y, unsigned weight, unsigned hight):
             Widget(x, y, weight, hight),
-            pixels_(sf::Points, weight * hight),
+            pixels_(new unsigned[4 * weight * hight]),
             isActive_(false)
             {
-                for(unsigned i = 0; i < weight_ * hight_; i++) {
-                    pixels_[i].position = sf::Vector2f(static_cast<float>(x_ + i % weight_),
-                                                       static_cast<float>(y_ + i / weight_));
-                    pixels_[i].color = canvasColor_;
+                for(unsigned i = 0; i < 4 * weight_ * hight_; i += 4) {
+                    pixels_[i] = canvasColor_.r;
+                    pixels_[i + 1] = canvasColor_.g;
+                    pixels_[i + 2] = canvasColor_.b;
+                    pixels_[i + 3] = canvasColor_.a;
                 }
             }
-        ~CanvasWindow() {}
+        ~CanvasWindow() {
+            delete [] pixels_;
+        }
 
         CanvasWindow(const CanvasWindow& canvasWindow) = delete;
         CanvasWindow& operator = (const CanvasWindow& canvasWindow) = delete;
@@ -51,7 +54,7 @@ class CanvasWindow: public Widget {
             }
 
             if (isActive_ && activeTool_) {
-                activeTool_->actionWithCanvas(pixels_, x_, y_, weight_, hight_, (unsigned) point.x, (unsigned) point.y);
+                activeTool_->apply(pixels_, (int) weight_, (int) hight_, Pair<int>{point.x - (int) x_, point.y - (int) y_});
             }
         }
 
@@ -114,12 +117,12 @@ class CanvasWindow: public Widget {
                 }
             }
 
-            for (unsigned j = y_, j1 = 0; j < (y_ + hight_); j++, j1++) {
-                for (unsigned i = 4 * (x_), i1 = 0; i < 4 * (x_ + weight_) - (4 - 1); i += 4, i1++) {
-                    screen[j * 4 * (unsigned) width + i] = pixels_[j1 * weight_ + i1].color.r;
-                    screen[j * 4 * (unsigned) width + i + 1] = pixels_[j1 * weight_ + i1].color.g;
-                    screen[j * 4 * (unsigned) width + i + 2] = pixels_[j1 * weight_ + i1].color.b;
-                    screen[j * 4 * (unsigned) width + i + 3] = pixels_[j1 * weight_ + i1].color.a;
+            for (unsigned j = y_, j1 = 0; j1 < hight_; j++, j1++) {
+                for (unsigned i = 4 * (x_), i1 = 0; i1 < 4 * weight_ - (4 - 1); i += 4, i1 += 4) {
+                    screen[j * 4 * (unsigned) width + i] = pixels_[j1 * 4 * weight_ + i1];
+                    screen[j * 4 * (unsigned) width + i + 1] = pixels_[j1 * 4 * weight_ + i1 + 1];
+                    screen[j * 4 * (unsigned) width + i + 2] = pixels_[j1 * 4 * weight_ + i1 + 2];
+                    screen[j * 4 * (unsigned) width + i + 3] = pixels_[j1 * 4 * weight_ + i1 + 3];
                 }
             }
         }

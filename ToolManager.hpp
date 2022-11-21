@@ -2,24 +2,24 @@
 #define TOOL_MANAGER_HPP_
 
 #include <iostream>
-#include "Tool.hpp"
+#include "plugin.h"
 #include "ToolPalette.hpp"
 
 class ToolManager {
     public:
         size_t size_;
         size_t curSize_;
-        Tool** tools_;
+        ITool** tools_;
         ToolPalette& toolPalette_;
 
-        Tool* activeTool_ = nullptr; 
+        ITool* activeTool_ = nullptr; 
         unsigned activeSize_ = 10;
         sf::Color activeColor_ = sf::Color::Black;
      public:
         ToolManager(unsigned size, ToolPalette& toolPalette):
             size_(size),
             curSize_(0),
-            tools_((Tool**) new char[size_*sizeof(Tool*)]),
+            tools_((ITool**) new char[size_*sizeof(ITool*)]),
             toolPalette_(toolPalette)
             {}
         ~ToolManager() {
@@ -29,7 +29,7 @@ class ToolManager {
         ToolManager(const ToolManager& toolManager) = delete;
         ToolManager& operator = (const ToolManager& toolManager) = delete;
 
-        bool addTool(Tool* tool) {
+        bool addTool(ITool* tool) {
             if (curSize_ >= size_) {
                 std::cout << "Array of Tool is full!\n";
                 return 0;
@@ -41,13 +41,15 @@ class ToolManager {
 
         void setParametersOfActiveTool() {
             if (activeTool_) {
-                activeTool_->size_ = activeSize_;
-                activeTool_->color_ = activeColor_;
+                toolPalette_.setSize(activeSize_);
+                toolPalette_.setColor(activeColor_);
+                toolPalette_.setState(true);
+            } else {
+                toolPalette_.setState(false);
             }
         }
 
         void draw(unsigned int* screen, int width, int height) {
-            toolPalette_.setTool(activeTool_);
             toolPalette_.draw(screen, width, height);
         }
 };

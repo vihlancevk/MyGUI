@@ -1,40 +1,46 @@
 #ifndef ERASER_HPP_
 #define ERASER_HPP_
 
-#include "Tool.hpp"
+#include "plugin.h"
 
-class Eraser: public Tool {
+class Eraser: public ITool {
     public:
-        Eraser():
-            Tool()
+        unsigned size_;
+        sf::Color color_;
+    public:
+        Eraser(unsigned size = 10, sf::Color color = sf::Color::Black):
+            size_(size),
+            color_(color)
             {}
+
         ~Eraser() {}
 
-        void actionWithCanvas(sf::VertexArray& pixels,
-                              unsigned canvasX, unsigned canvasY, unsigned canvasWeight, unsigned canvasHight,
-                              unsigned x, unsigned y) override {
-            unsigned startX = 0;
-            if (x - canvasX > size_ && (canvasX + canvasWeight) - x > size_) {
-                startX = x - canvasX - size_;
-            } else if ((canvasX + canvasWeight) - x <= size_) {
-                startX = canvasWeight - size_;
+        void apply(unsigned int* pixmap, int width, int height, Pair<int> point) override {
+            int startX = 0;
+            if ((unsigned) point.x > size_ && (unsigned) (width - point.x) > size_) {
+                startX = point.x - (int) size_;
+            } else if (width - point.x <= (int) size_) {
+                startX = width - (int) size_;
             }
 
-            unsigned startY = 0;
-            if (y - canvasY > size_ && (canvasY + canvasHight) - y > size_) {
-                startY = y - canvasY - size_;
-            } else if ((canvasY + canvasHight) - y <= size_) {
-                startY = canvasHight - size_;
+            int startY = 0;
+            if ((unsigned) point.y > size_ && unsigned (height - point.y) > size_) {
+                startY = point.y - (int) size_;
+            } else if (height - point.y <= (int) size_) {
+                startY = height - (int) size_;
             }
 
-            unsigned startPixel = (startY) * canvasWeight + (startX);
-        
-            for (unsigned i = 0; i < size_; i++) {
-                for (unsigned j = 0; j < size_; j++) {
-                    pixels[startPixel + i * canvasWeight + j].color = sf::Color::White;
+            for (int i = startY; i < startY + (int) size_; i++) {
+                for (int j = 4 * startX; j < 4 * (startX + (int) size_); j += 4) {
+                    pixmap[i * 4 * width + j] = 255;
+                    pixmap[i * 4 * width + j + 1] = 255;
+                    pixmap[i * 4 * width + j + 2] = 255;
+                    pixmap[i * 4 * width + j + 3] = 255;
                 }
             }
         }
+
+        void deactivate() override {}
 };
 
 #endif // ERASER_HPP_

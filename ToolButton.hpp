@@ -2,7 +2,7 @@
 #define TOOL_BUTTON_HPP_
 
 #include "AbstractButton.hpp"
-#include "Tool.hpp"
+#include "plugin.h"
 
 class ToolButton: public AbstractButton {
     public:
@@ -10,12 +10,12 @@ class ToolButton: public AbstractButton {
 
         size_t size_ = 1;
         size_t curSize_ = 0;
-        Tool** tool_;
+        ITool** tool_;
     public:
         ToolButton(unsigned x, unsigned y, unsigned weight, unsigned hight, const char* image):
             AbstractButton(x, y, weight, hight),
             image_(),
-            tool_((Tool**) new char[sizeof(Tool*)])
+            tool_((ITool**) new char[sizeof(ITool*)])
             {
                 image_.loadFromFile(image);
             }
@@ -26,7 +26,7 @@ class ToolButton: public AbstractButton {
         ToolButton(const ToolButton& toolButton) = delete;
         ToolButton& operator = (const ToolButton& toolButton) = delete;
 
-        size_t setTool(Tool* tool) {
+        size_t setTool(ITool* tool) {
             if (curSize_ >= size_) {
                 std::cout << "Tool in ToolButton already set!\n";
                 return 0;

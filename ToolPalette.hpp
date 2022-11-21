@@ -5,7 +5,10 @@
 
 class ToolPalette: public Widget {
     public:
-        Tool* tool_ = nullptr;
+        unsigned size_ = 10;
+        sf::Color color_ = sf::Color::Black;
+        
+        bool isActive_ = false;
     public:
         ToolPalette(unsigned x, unsigned y, unsigned weight, unsigned hight):
             Widget(x , y, weight, hight)
@@ -15,12 +18,20 @@ class ToolPalette: public Widget {
         ToolPalette(const ToolPalette& toolPalette) = delete;
         ToolPalette& operator = (const ToolPalette& toolPalette) = delete;
 
-        void setTool(Tool* tool) {
-            tool_ = tool;
+        void setSize(unsigned size) {
+            size_ = size;
+        }
+
+        void setColor(sf::Color color) {
+            color_ = color;
+        }
+
+        void setState(bool state) {
+            isActive_ = state;
         }
 
         void draw(unsigned int* screen, int width, int /*height*/) override {
-            if (tool_) {
+            if (isActive_) {
                 // (*) --------------------
                 //     |                  |
                 //     |                  |
@@ -88,12 +99,12 @@ class ToolPalette: public Widget {
                     }
                 }
 
-                for (unsigned j = (y_ + hight_ / 2 - tool_->size_ / 2); j < (y_ + hight_ / 2 + tool_->size_ / 2); j++) {
+                for (unsigned j = (y_ + hight_ / 2 - size_ / 2); j < (y_ + hight_ / 2 + size_ / 2); j++) {
                     for (unsigned i = 4 * (x_ + weight_ / 8); i < 4 * (x_ + 7 * weight_ / 8) - (4 - 1); i += 4) {
-                        screen[j * 4 * (unsigned) width + i] = tool_->color_.r;
-                        screen[j * 4 * (unsigned) width + i + 1] = tool_->color_.g;
-                        screen[j * 4 * (unsigned) width + i + 2] = tool_->color_.b;
-                        screen[j * 4 * (unsigned) width + i + 3] = tool_->color_.a;
+                        screen[j * 4 * (unsigned) width + i] = color_.r;
+                        screen[j * 4 * (unsigned) width + i + 1] = color_.g;
+                        screen[j * 4 * (unsigned) width + i + 2] = color_.b;
+                        screen[j * 4 * (unsigned) width + i + 3] = color_.a;
                     }
                 }
             } else {
