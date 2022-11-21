@@ -49,6 +49,7 @@ class PluginManager {
 
                 if (plugins_[i]->get_tool_button()->get_state() && isActivated) {
                     activeTool_ = plugins_[i]->get_tool();
+                    plugins_[i]->get_tool_button()->set_signal(nullptr);
 
                     for (size_t j = 0; j < size_; j++) {
                         if (j != i)
@@ -58,6 +59,7 @@ class PluginManager {
                     return;
                 } else if (!(plugins_[i]->get_tool_button()->get_state() || isActivated)) {
                     activeTool_ = nullptr;
+                    plugins_[i]->get_tool_button()->set_signal(nullptr);
                 } else {
                     isActivated = false;
                 }

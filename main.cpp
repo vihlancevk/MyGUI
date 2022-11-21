@@ -71,6 +71,7 @@ int main() {
     pluginManager.addPlugin(new PluginBrush (new Brush(),
                                              new Props(&colorButtonManager, &sizeButtonManager, toolPalette),
                                              new ToolButton(100, 225, 135, 90, "images/brush.png")));
+    ((ToolButton*) pluginManager.plugins_[0]->get_tool_button())->set_plugin((PluginBrush*) pluginManager.plugins_[0]);
     // TODO: class PlaginEraser {}
     // pluginManager.addPlugin(new PluginEraser (new Eraser(),
     //                                           new ToolPalette(275, 130, 400, 30),

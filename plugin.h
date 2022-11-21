@@ -87,11 +87,6 @@ private:
     bool state_;
 
 public:
-    IPushButton():
-        signal_(nullptr),
-        state_(false)
-        {}
-
     virtual ~IPushButton() = default;
 
     /**
