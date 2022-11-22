@@ -1,7 +1,8 @@
 #ifndef BRUSH_HPP_
 #define BRUSH_HPP_
 
-#include "plugin.h"
+#include <SFML/Graphics.hpp>
+#include "../plugin.h"
 
 class Brush: public ITool {
     public:

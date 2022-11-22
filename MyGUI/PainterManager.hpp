@@ -1,8 +1,6 @@
 #ifndef WIDGET_MANAGER_HPP_
 #define WIDGET_MANAGER_HPP_
 
-#include "ColorButtonManager.hpp"
-#include "SizeButtonManager.hpp"
 #include "PluginManager.hpp"
 #include "CurvesFilterWindow.hpp"
 #include "CanvasWindow.hpp"

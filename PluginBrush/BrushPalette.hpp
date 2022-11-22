@@ -1,7 +1,7 @@
 #ifndef TOOL_PALETTE_HPP_
 #define TOOL_PALETTE_HPP_
 
-#include "Widget.hpp"
+#include "../Widget.hpp"
 
 class ToolPalette: public Widget {
     public:

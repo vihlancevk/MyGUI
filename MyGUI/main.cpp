@@ -1,16 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "Brush.hpp"
-#include "Eraser.hpp"
-#include "ScrollBarButton.hpp"
-#include "ColorButton.hpp"
-#include "SizeButton.hpp"
-#include "ColorButtonManager.hpp"
-#include "SizeButtonManager.hpp"
-#include "ToolPalette.hpp"
-#include "Props.hpp"
-#include "ToolButton.hpp"
-#include "PluginBrush.hpp"
+#include "../plugin.h"
 // #include "PluginEraser.hpp"
 #include "PainterManager.hpp"
 #include "CurvesFilterWindow.hpp"
@@ -48,30 +38,9 @@ int main() {
 
     sf::VertexArray vertexArrayPixels(sf::Points, SCREEN_WEIGHT * SCREEN_HIGHT);
 
-    const size_t nColorButtons = 3;
-    ColorButton colorButtons[nColorButtons] = 
-    {
-        ColorButton(1600, 175, 160, 90, sf::Color::Red),
-        ColorButton(1600, 275, 160, 90, sf::Color::Green),
-        ColorButton(1600, 375, 160, 90, sf::Color::Blue)
-    };
-
-    ColorButtonManager colorButtonManager;
-    for (size_t i = 0; i < nColorButtons; i++){
-        colorButtonManager.addColorButton(colorButtons[i]);   
-    }
-
-    SizeButton sizeButton(1600, 805, 160, 90);
-    SizeButtonManager sizeButtonManager(sizeButton);
-
-    ToolPalette toolPalette(275, 130, 400, 30);
-
     size_t nPlugins = 1;
     PluginManager pluginManager(nPlugins);
-    pluginManager.addPlugin(new PluginBrush (new Brush(),
-                                             new Props(&colorButtonManager, &sizeButtonManager, toolPalette),
-                                             new ToolButton(100, 225, 135, 90, "images/brush.png")));
-    ((ToolButton*) pluginManager.plugins_[0]->get_tool_button())->set_plugin((PluginBrush*) pluginManager.plugins_[0]);
+    pluginManager.addPlugin(get_plugin());
     // TODO: class PlaginEraser {}
     // pluginManager.addPlugin(new PluginEraser (new Eraser(),
     //                                           new ToolPalette(275, 130, 400, 30),
@@ -116,12 +85,7 @@ int main() {
 		window.clear();
 	}
 
-    for (size_t i = 0; i < nPlugins; i++) {
-        delete pluginManager.plugins_[i]->get_tool_button();
-        delete pluginManager.plugins_[i]->get_props();
-        delete pluginManager.plugins_[i]->get_tool();
-        delete pluginManager.plugins_[i];
-    }
+    destroy_plugin();
 
     delete [] pixels;
 

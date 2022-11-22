@@ -1,37 +1,36 @@
-#ifndef BUTTON_HPP_
-#define BUTTON_HPP_
+#ifndef SIZE_BUTTON_HPP_
+#define SIZE_BUTTON_HPP_
 
-#include "AbstractButton.hpp"
-#include "string.h"
+#include "../AbstractButton.hpp"
+#include "../ScrollBarButton.hpp"
 
-class Button: public AbstractButton {
+class SizeButton: public AbstractButton {
     public:
-        sf::Font font_;
         unsigned size_ = 10;
-        sf::Text text_;
+
+        ScrollBarButton scrollBarButton_;
     public:
-        Button(unsigned x, unsigned y, unsigned weight, unsigned hight, const char* str):
+        SizeButton(unsigned x, unsigned y, unsigned weight, unsigned hight):
             AbstractButton(x, y, weight, hight),
-            font_(),
-            text_()
-            {
-                font_.loadFromFile("./fonts/classic.ttf");
-                new (&text_) sf::Text(str, font_, size_);
-                text_.setFillColor(sf::Color::Black);
-                text_.setPosition(sf::Vector2f((float) (x),
-                                               (float) (y + hight / 2)));
-            }
-        ~Button() {}
+            scrollBarButton_(ScrollBarButton(x, y, weight, hight, 5, 25))
+            {}
+        ~SizeButton() {}
 
         void on_mouse_press(Pair<int> point) override {
-            contains(point);
-            if (isContains_) {
-                isActive_ = true;
-                isContains_ = false;
-            }
+            scrollBarButton_.on_mouse_press(point);
         }
 
-        void draw(unsigned int* screen, int width, int /*height*/) override {
+        void on_mouse_release(Pair<int> point) override {
+            scrollBarButton_.on_mouse_release(point);
+
+            size_ = scrollBarButton_.calculateValue();
+        }
+
+        void on_mouse_move(Pair<int> point) override {
+            scrollBarButton_.on_mouse_move(point);
+        }
+
+        void draw(unsigned int* screen, int width, int height) override {
             // (*) --------------------
             //     |                  |
             //     |                  |
@@ -90,8 +89,17 @@ class Button: public AbstractButton {
                 }
             }
 
-            // window.draw(text_);
+            for (unsigned j = y_; j < (y_ + hight_); j++) {
+                for (unsigned i = 4 * (x_); i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
+                    screen[j * 4 * (unsigned) width + i] =
+                    screen[j * 4 * (unsigned) width + i + 1] =
+                    screen[j * 4 * (unsigned) width + i + 2] =
+                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                }
+            }
+
+            scrollBarButton_.draw(screen, width, height);
         }
 };
 
-#endif // BUTTON_HPP_
+#endif // SIZE_BUTTON_HPP_

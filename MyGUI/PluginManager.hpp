@@ -1,7 +1,8 @@
 #ifndef PLUGIN_MANAGER_HPP_
 #define PLUGIN_MANAGER_HPP_
 
-#include "plugin.h"
+#include "iostream"
+#include "../plugin.h"
 
 class PluginManager {
     public:

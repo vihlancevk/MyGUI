@@ -2,10 +2,10 @@
 #define PROPS_HPP_
 
 #include <iostream>
-#include "plugin.h"
+#include "../plugin.h"
 #include "ColorButtonManager.hpp"
 #include "SizeButtonManager.hpp"
-#include "ToolPalette.hpp"
+#include "BrushPalette.hpp"
 
 class Props: public IWidget {
     public:
