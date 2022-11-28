@@ -1,0 +1,3 @@
+g++ -fPIC -c PluginBrushStart.cpp -o PluginBrushStart.o
+g++ -c ColorButton.cpp -o ColorButton.o
+g++ -fPIC -shared PluginBrushStart.o ColorButton.o -o libPluginBrush.so

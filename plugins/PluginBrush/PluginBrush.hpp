@@ -1,7 +1,7 @@
 #ifndef PLUGIN_BRUSH_HPP_
 #define PLUGIN_BRUSH_HPP_
 
-#include "../plugin.h"
+#include "plugin.h"
 
 class PluginBrush: public IPlugin {
     public:

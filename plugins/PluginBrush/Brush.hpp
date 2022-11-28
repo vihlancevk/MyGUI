@@ -1,19 +1,20 @@
-#ifndef ERASER_HPP_
-#define ERASER_HPP_
+#ifndef BRUSH_HPP_
+#define BRUSH_HPP_
 
+#include <SFML/Graphics.hpp>
 #include "plugin.h"
 
-class Eraser: public ITool {
+class Brush: public ITool {
     public:
         unsigned size_;
         sf::Color color_;
     public:
-        Eraser(unsigned size = 10, sf::Color color = sf::Color::Black):
+        Brush(unsigned size = 10, sf::Color color = sf::Color::Black):
             size_(size),
             color_(color)
             {}
 
-        ~Eraser() {}
+        ~Brush() {}
 
         void apply(unsigned int* pixmap, int width, int height, Pair<int> point) override {
             int startX = 0;
@@ -32,10 +33,10 @@ class Eraser: public ITool {
 
             for (int i = startY; i < startY + (int) size_; i++) {
                 for (int j = 4 * startX; j < 4 * (startX + (int) size_); j += 4) {
-                    pixmap[i * 4 * width + j] = 255;
-                    pixmap[i * 4 * width + j + 1] = 255;
-                    pixmap[i * 4 * width + j + 2] = 255;
-                    pixmap[i * 4 * width + j + 3] = 255;
+                    pixmap[i * 4 * width + j] = color_.r;
+                    pixmap[i * 4 * width + j + 1] = color_.g;
+                    pixmap[i * 4 * width + j + 2] = color_.b;
+                    pixmap[i * 4 * width + j + 3] = color_.a;
                 }
             }
         }
@@ -43,4 +44,4 @@ class Eraser: public ITool {
         void deactivate() override {}
 };
 
-#endif // ERASER_HPP_
+#endif // BRUSH_HPP_

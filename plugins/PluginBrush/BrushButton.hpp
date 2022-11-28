@@ -2,7 +2,7 @@
 #define TOOL_BUTTON_HPP_
 
 #include <iostream>
-#include "../plugin.h"
+#include "plugin.h"
 #include "PluginBrush.hpp"
 #include "Brush.hpp"
 #include "PropsBrush.hpp"
@@ -47,6 +47,7 @@ class ToolButton: public IPushButton {
             ((Brush*) plugin_->get_tool())->size_ = ((Props*) plugin_->get_props())->toolPalette_.size_;
             ((Brush*) plugin_->get_tool())->color_ = ((Props*) plugin_->get_props())->toolPalette_.color_;
             ((Props*) plugin_->get_props())->toolPalette_.isActive_ = (((ToolButton*) plugin_->get_tool_button())->get_state()) ? true : false;
+            ((Props*) plugin_->get_props())->isActive_ = (((ToolButton*) plugin_->get_tool_button())->get_state()) ? true : false;
         }
 
         void set_pos(Pair<int> /*point*/) override {

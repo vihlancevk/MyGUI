@@ -2,7 +2,7 @@
 #define PLUGIN_MANAGER_HPP_
 
 #include "iostream"
-#include "../plugin.h"
+#include "plugin.h"
 
 class PluginManager {
     public:
@@ -70,6 +70,7 @@ class PluginManager {
         void on_mouse_release(Pair<int> point) {
             for (size_t i = 0; i < curSize_; i++) {
                 plugins_[i]->get_props()->on_mouse_release(point);
+                plugins_[i]->get_tool_button()->set_signal(nullptr); // change properties of tool after use button
             }
         }
 

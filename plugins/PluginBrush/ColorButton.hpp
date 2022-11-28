@@ -1,8 +1,8 @@
 #ifndef COLOR_BUTTON_HPP_
 #define COLOR_BUTTON_HPP_
 
-#include "../AbstractButton.hpp"
-#include "../ScrollBarButton.hpp"
+#include "AbstractButton.hpp"
+#include "ScrollBarButton.hpp"
 
 class ColorButton: public AbstractButton {
     public:

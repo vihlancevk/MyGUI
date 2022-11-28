@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "../plugin.h"
-// #include "PluginEraser.hpp"
+#include "plugin.h"
 #include "PainterManager.hpp"
 #include "CurvesFilterWindow.hpp"
 #include "CanvasWindow.hpp"
@@ -40,11 +39,8 @@ int main() {
 
     size_t nPlugins = 1;
     PluginManager pluginManager(nPlugins);
-    pluginManager.addPlugin(get_plugin());
-    // TODO: class PlaginEraser {}
-    // pluginManager.addPlugin(new PluginEraser (new Eraser(),
-    //                                           new ToolPalette(275, 130, 400, 30),
-    //                                           new ToolButton(100, 350, 135, 90, "images/eraser.png")));
+    pluginManager.addPlugin(brush::get_plugin());
+    pluginManager.addPlugin(eraser::get_plugin());
 
     CurvesFilterWindow curvesFilterWindow(400, 400, 800, 450);
 
@@ -85,7 +81,8 @@ int main() {
 		window.clear();
 	}
 
-    destroy_plugin();
+    brush::destroy_plugin();
+    eraser::destroy_plugin();
 
     delete [] pixels;
 

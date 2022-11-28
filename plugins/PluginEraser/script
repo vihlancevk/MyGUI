@@ -1,0 +1,3 @@
+g++ -fPIC -c PluginEraserStart.cpp -o PluginEraserStart.o
+g++ -c ColorButton.cpp -o ColorButton.o
+g++ -fPIC -shared PluginEraserStart.o ColorButton.o -o libPluginEraser.so

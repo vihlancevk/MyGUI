@@ -2,10 +2,10 @@
 #define PROPS_HPP_
 
 #include <iostream>
-#include "../plugin.h"
+#include "plugin.h"
 #include "ColorButtonManager.hpp"
 #include "SizeButtonManager.hpp"
-#include "BrushPalette.hpp"
+#include "EraserPalette.hpp"
 
 class Props: public IWidget {
     public:
@@ -15,6 +15,8 @@ class Props: public IWidget {
 
         sf::Color activeColor_ = sf::Color::Black;
         unsigned size_ = 10;
+
+        bool isActive_ = false;
     public:
         Props(ColorButtonManager* colorButtonManager,
               SizeButtonManager* SizeButtonManager,
@@ -30,60 +32,74 @@ class Props: public IWidget {
         Props& operator = (const Props& props) = delete;        
 
         void set_pos(Pair<int> /*point*/) override {
-            std::cout << "Props::set_pos(Pair<int> point)\n";
+            if (isActive_)
+                std::cout << "Props::set_pos(Pair<int> point)\n";
         }
 
         Pair<int> get_pos() override {
-            std::cout << "Props::get_pos()\n";
+            if (isActive_)
+                std::cout << "Props::get_pos()\n";
 
             return Pair<int>{0, 0};
         }
 
         Pair<int> get_size() override {
-            std::cout << "Props::get_size()\n";
+            if (isActive_)
+                std::cout << "Props::get_size()\n";
 
             return Pair<int>{0, 0};
         }
 
         void contains(Pair<int> /*point*/) override {
-            std::cout << "Props::contains(Pair<int> point)\n";
+            if (isActive_)
+                std::cout << "Props::contains(Pair<int> point)\n";
         }
 
         void on_mouse_press(Pair<int> point) override {
-            colorButtonManager_->on_mouse_press(point);
+            if (isActive_) {
+                colorButtonManager_->on_mouse_press(point);
 
-            sizeButtonManager_->on_mouse_press(point);
+                sizeButtonManager_->on_mouse_press(point);
+            }
         }
 
         void on_mouse_release(Pair<int> point) override {
-            colorButtonManager_->on_mouse_release(point);
+            if (isActive_) {
+                colorButtonManager_->on_mouse_release(point);
 
-            sizeButtonManager_->on_mouse_release(point);
+                sizeButtonManager_->on_mouse_release(point);
 
-            toolPalette_.color_ = colorButtonManager_->activeColor_;
-            toolPalette_.size_ = sizeButtonManager_->activeSize_;
+                toolPalette_.color_ = colorButtonManager_->activeColor_;
+                toolPalette_.size_ = sizeButtonManager_->activeSize_;
+            }
         }
 
         void on_mouse_move(Pair<int> point) override {
-            colorButtonManager_->on_mouse_move(point);
+            if (isActive_) {
+                colorButtonManager_->on_mouse_move(point);
             
-            sizeButtonManager_->on_mouse_move(point);
+                sizeButtonManager_->on_mouse_move(point);
+            }
         }
 
         void on_key_press(int /*key*/) override {
-            std::cout << "Props::on_key_press(int key)\n";
+            if (isActive_)
+                std::cout << "Props::on_key_press(int key)\n";
         }
 
         void on_key_release(int /*key*/) override {
-            std::cout << "Props::on_key_release(int key)\n";
+            if (isActive_)
+                std::cout << "Props::on_key_release(int key)\n";
         }
 
         void draw(unsigned int* screen, int width, int height) override {
-            colorButtonManager_->draw(screen, width, height);
+            if (isActive_) {
+                colorButtonManager_->draw(screen, width, height);
 
-            sizeButtonManager_->draw(screen, width, height);
+                sizeButtonManager_->draw(screen, width, height);
             
-            toolPalette_.draw(screen, width, height);
+                toolPalette_.draw(screen, width, height);
+            }
         }
 };
 

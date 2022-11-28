@@ -1,61 +1,37 @@
-#ifndef CURVES_FILTER_WINDOW_HPP_
-#define CURVES_FILTER_WINDOW_HPP_
+#ifndef BUTTON_HPP_
+#define BUTTON_HPP_
 
-#include "../Widget.hpp"
-#include "Button.hpp"
+#include "AbstractButton.hpp"
+#include "string.h"
 
-class CurvesFilterWindow: public Widget {
+class Button: public AbstractButton {
     public:
-        Button okButton_;
-        Button cancelButton_;
-
-        bool isActive_ = false;
-        unsigned outlineThickness_ = 3;
-
-        int prevCode_ = 0;
+        sf::Font font_;
+        unsigned size_ = 10;
+        sf::Text text_;
     public:
-        CurvesFilterWindow(unsigned x, unsigned y, unsigned weight, unsigned hight):
-            Widget(x, y, weight, hight),
-            okButton_(x + 17 * weight / 20, y + hight / 20, weight / 10, 2 * hight / 20, "OK"),
-            cancelButton_(x + 17 * weight / 20, y + 4 * hight / 20, weight / 10, 2 * hight / 20, "CANCEL")
-            {}
-        ~CurvesFilterWindow() {}
+        Button(unsigned x, unsigned y, unsigned weight, unsigned hight, const char* str):
+            AbstractButton(x, y, weight, hight),
+            font_(),
+            text_()
+            {
+                font_.loadFromFile("./fonts/classic.ttf");
+                new (&text_) sf::Text(str, font_, size_);
+                text_.setFillColor(sf::Color::Black);
+                text_.setPosition(sf::Vector2f((float) (x),
+                                               (float) (y + hight / 2)));
+            }
+        ~Button() {}
 
         void on_mouse_press(Pair<int> point) override {
-            okButton_.on_mouse_press(point);
-            cancelButton_.on_mouse_press(point);
-
-            if (okButton_.isActive_) {
-                isActive_ = false;
-                std::cout << "Change save!\n";
-                return;
-            }
-            if (cancelButton_.isActive_) {
-                isActive_ = false;
-                std::cout << "Change don`t save!\n";
+            contains(point);
+            if (isContains_) {
+                isActive_ = true;
+                isContains_ = false;
             }
         }
-        
-        void on_mouse_release(Pair<int> /*point*/) override {
-            std::cout << "CurvesFilterWindow::on_mouse_release(Pair<int>)\n";
-        }
-        
-        void on_mouse_move(Pair<int> /*point*/) override {
-            std::cout << "CurvesFilterWindow::on_mouse_move(Pair<int>)\n";
-        }
 
-        void on_key_press(int key) override {
-            if (prevCode_ == sf::Keyboard::LControl) {
-                if (key == sf::Keyboard::N) {
-                    isActive_ = true;
-                }
-            }
-
-            prevCode_ = key;
-        }
-
-        void draw(unsigned int* screen, int width, int height) override {
-            if (isActive_) {
+        void draw(unsigned int* screen, int width, int /*height*/) override {
             // (*) --------------------
             //     |                  |
             //     |                  |
@@ -114,10 +90,8 @@ class CurvesFilterWindow: public Widget {
                 }
             }
 
-                okButton_.draw(screen, width, height);
-                cancelButton_.draw(screen, width, height);
-            }
+            // window.draw(text_);
         }
 };
 
-#endif // CURVES_FILTER_WINDOW_HPP_
+#endif // BUTTON_HPP_
