@@ -47,9 +47,9 @@ class PainterManager {
         void draw(unsigned int* screen, int width, int height) {            
             pluginManager_.draw(screen, width, height);
             
-            curvesFilterWindow_.draw(screen, width, height);
-            
             canvasWindow_.draw(screen, width, height);
+        
+            curvesFilterWindow_.draw(screen, width, height);
         }
 };
 

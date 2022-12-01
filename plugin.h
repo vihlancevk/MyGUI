@@ -1,5 +1,11 @@
 #pragma once
 
+// RenderTexture
+// Image
+// Image -> Texture -> Sprite
+// text -> Text -> Texture
+// медленные операции копирования
+
 template <typename T>
 struct Pair
 {

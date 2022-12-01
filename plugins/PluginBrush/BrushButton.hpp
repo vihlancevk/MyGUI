@@ -164,23 +164,16 @@ class ToolButton: public IPushButton {
                 }
             }
 
+
+            const unsigned char* pixels = image_.getPixelsPtr();
             for (unsigned j = y_; j < (y_ + hight_); j++) {
                 for (unsigned i = 4 * (x_); i < 4 * (x_ + weight_) - (4 - 1); i += 4) {
-                    screen[j * 4 * (unsigned) width + i] =
-                    screen[j * 4 * (unsigned) width + i + 1] =
-                    screen[j * 4 * (unsigned) width + i + 2] =
-                    screen[j * 4 * (unsigned) width + i + 3] = 255;
+                    screen[j * 4 * (unsigned) width + i] = pixels[(j - y_) * 4 * (unsigned) weight_ + (i - 4 * (x_))];
+                    screen[j * 4 * (unsigned) width + i + 1] = pixels[(j - y_) * 4 * (unsigned) weight_ + (i - 4 * (x_)) + 1];
+                    screen[j * 4 * (unsigned) width + i + 2] = pixels[(j - y_) * 4 * (unsigned) weight_ + (i - 4 * (x_)) + 2];
+                    screen[j * 4 * (unsigned) width + i + 3] = pixels[(j - y_) * 4 * (unsigned) weight_ + (i - 4 * (x_)) + 3];
                 }
             }
-
-            // sf::Texture texture;
-            // texture.loadFromImage(image_, sf::IntRect(0, 0, (int) weight_, (int) hight_));
-
-            // sf::Sprite sprite;
-            // sprite.setTexture(texture);
-            // sprite.setPosition((float) x_, (float) y_);
-            
-            // window.draw(sprite);
 
             if (this->get_state()) {
                 const unsigned pointRadius = 5;

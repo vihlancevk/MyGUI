@@ -53,8 +53,10 @@ class PluginManager {
                     plugins_[i]->get_tool_button()->set_signal(nullptr);
 
                     for (size_t j = 0; j < size_; j++) {
-                        if (j != i)
-                            plugins_[i]->get_tool_button()->set_state(false);
+                        if (j != i) {
+                            plugins_[j]->get_tool_button()->set_state(false);
+                            plugins_[j]->get_tool_button()->set_signal(nullptr);
+                        }
                     }
 
                     return;
@@ -70,7 +72,8 @@ class PluginManager {
         void on_mouse_release(Pair<int> point) {
             for (size_t i = 0; i < curSize_; i++) {
                 plugins_[i]->get_props()->on_mouse_release(point);
-                plugins_[i]->get_tool_button()->set_signal(nullptr); // change properties of tool after use button
+                for (int j = 0; j < 2; j++)
+                    plugins_[i]->get_tool_button()->set_signal(nullptr); // change properties of tool after use button
             }
         }
 
